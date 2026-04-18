@@ -1,0 +1,191 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background: url("../../assets/mountain.jpg") no-repeat center center/cover;
+  color: white;
+  position: relative;
+}
+
+.logo img {
+  width: 60px;
+  height: auto;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 18, 28, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.brand {
+  margin-bottom: 22px;
+}
+
+.logo {
+  font-size: 48px;
+  color: #63d65c;
+  margin-bottom: 0px;
+  line-height: 0;
+}
+
+.brand h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin-top: 5px;
+  margin-bottom: 6px;
+}
+
+.brand p {
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(18, 31, 43, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 26px 24px 22px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px);
+  text-align: left;
+}
+
+.auth-card h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 15px;
+  margin-bottom: 18px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+form label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: rgba(72, 95, 112, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.icon {
+  color: rgba(255, 255, 255, 0.65);
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.input-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.input-box input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.message {
+  min-height: 22px;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.message.success {
+  color: #67f591;
+}
+
+.message.error {
+  color: #ff8e8e;
+}
+
+button {
+  width: 100%;
+  height: 48px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 12px;
+  background: #08bf43;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #06a539;
+}
+
+.bottom-text,
+.footer-text {
+  text-align: center;
+  font-size: 14px;
+}
+
+.bottom-text {
+  margin-top: 20px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.bottom-text a {
+  color: #11d84b;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-text {
+  margin-top: 22px;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+@media (max-width: 600px) {
+  .brand h1 {
+    font-size: 32px;
+  }
+
+  .brand p {
+    font-size: 15px;
+  }
+
+  .auth-card {
+    padding: 20px 16px;
+  }
+}

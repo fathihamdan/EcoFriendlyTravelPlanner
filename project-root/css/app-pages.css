@@ -1,0 +1,49 @@
+.sidebar {
+  width: 70px;
+  background-color: #0b1f26;
+  color: #9fb3c8;
+  height: 100vh;
+  padding: 15px 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar .logo {
+  font-size: 24px;
+  text-align: center;
+  color: #4CAF50;
+}
+
+.sidebar i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.sidebar .active i {
+  color: #4CAF50;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  color: white;
+}
+
+/* ===== CARDS ===== */
+.custom-card {
+  background: rgba(20, 40, 50, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+/* ===== SELECT INPUT ===== */
+.custom-select {
+  background-color: #2b3e46;
+  border: none;
+  color: #ccc;
+}
+
+.custom-select:focus {
+  box-shadow: none;
+  border: 1px solid #4CAF50;
+}

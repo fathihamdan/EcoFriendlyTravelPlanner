@@ -1,10 +1,17 @@
 .sidebar {
-  width: 70px;
+  position:fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
   background-color: #0b1f26;
   color: #9fb3c8;
   height: 100vh;
+  z-index: 1000;
   padding: 15px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .sidebar .logo {
@@ -46,4 +53,105 @@
 .custom-select:focus {
   box-shadow: none;
   border: 1px solid #4CAF50;
+}
+
+/*Search Page*/
+/* Search input */
+.custom-input {
+  background-color: #2b3e46;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #ccc;
+}
+
+.custom-input:focus {
+  background-color: #2b3e46;
+  border: 1px solid #4CAF50;
+  color: #ccc;
+  box-shadow: none;
+}
+
+/* Filter dropdown */
+.filter-select {
+  background-color: #2b3e46;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: #ccc;
+}
+
+/* Clear button */
+.clear-btn {
+  background: #0b1f26;
+  color: #ccc;
+  border-radius: 10px;
+  padding: 8px 20px;
+}
+
+/* toggle button */
+.toggle-group {
+  background: #2b3e46;
+  border-radius: 30px;
+  padding: 5px;
+  display: inline-flex;
+}
+
+.toggle-btn {
+  border: none;
+  background: transparent;
+  color: #ccc;
+  padding: 6px 15px;
+  border-radius: 20px;
+}
+
+.toggle-btn.active {
+  background: rgba(20, 40, 50, 0.85);
+  color: #fff;
+}
+
+/*Places Card*/
+.place-card {
+  background: rgba(20,40,50,0.85);
+  border-radius: 15px;
+  overflow: hidden;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+
+  transition: 0.3s;
+}
+
+.place-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Image */
+.card-img {
+  position: relative;
+}
+
+.card-img img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* Badges */
+.badge-co2 {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #1db954;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.badge-type {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ccc;
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
 }

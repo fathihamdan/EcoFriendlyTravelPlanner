@@ -3,6 +3,7 @@
   background-color: #0b1f26;
   color: #9fb3c8;
   height: 100vh;
+  position: fixed;
   padding: 15px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -39,11 +40,204 @@
 /* ===== SELECT INPUT ===== */
 .custom-select {
   background-color: #2b3e46;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #ccc;
 }
 
 .custom-select:focus {
   box-shadow: none;
   border: 1px solid #4CAF50;
+}
+
+.green-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.green-bright-btn {
+  background-color: #00A63E;
+  color: white;
+  border: none;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.green-bright-btn:hover {
+  background-color: #008531;
+  color: white;
+}
+
+.back-btn {
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  padding: 7px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.back-btn:hover {
+  background-color: #476573;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.icon {
+  font-size: 30px;
+  color: #9fb3c8;
+}
+
+.form-control,
+.form-select {
+  background-color: #2c3e46;
+  color: #ccc;
+  outline: none;
+  border: 2px;
+  border-color: #9fb3c8;
+}
+
+.form-control::placeholder {
+  color: #9fb3c8;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 5px #4CAF50;
+  border-color: #4CAF50;
+  background-color: #2c3e46;
+}
+
+.form-select {
+  cursor: pointer;
+  appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  color-scheme: dark;
+}
+
+.form-select:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px #4CAF50;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+  background-color: #2c3e46;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #ccc;
+  cursor: text;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  color-scheme: dark;
+  margin: 0;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+.option-card {
+  display: inline-block;
+  background-color: #0f2027;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 2px;
+  transition: 0.2s;
+  border: 1px solid transparent;
+}
+
+.option-card:hover {
+  border-color: #65929b;
+  background-color: #65929b;
+}
+
+/* hide the radio circle */
+.option-card input {
+  display: none;
+}
+
+/* default text */
+.option-card span {
+  color: #ffffff;
+}
+
+.option-card:has(input:checked) {
+  background-color: #28a745;
+  border-bottom: #28a745;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 40px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 15px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #00A63E;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline-marker {
+  position: absolute;
+  left:0px;
+  top: 0;
+  background: #00A63E;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.activity-card {
+  background: rgba(30, 50, 60, 0.9);
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.activity-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.tag {
+  background: #1e7e34;
+  color: #aef7c5;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.co2-badge {
+  border: 1px solid #00A63E;
+  color: #00A63E;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
 }

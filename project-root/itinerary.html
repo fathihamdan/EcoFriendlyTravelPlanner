@@ -1,72 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eco-Search</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco-Search</title>
 
-    <!-- Bootstrap -->
-    <link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
-	rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
-	crossorigin="anonymous">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/app-pages.css">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <!-- Bootstrap Icons-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./css/global.css">
+  <link rel="stylesheet" href="./css/app-pages.css">
 
 </head>
-<body>
-    
-<div class="d-flex">
 
-  <!-- Sidebar -->
-  <div class="sidebar d-flex flex-column justify-content-between">
-    <div>
-      <div class="logo mb-4">
-        <img src="../assets/EcoRoam-logo.png">
+<body>
+
+  <div class="d-flex ">
+
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column justify-content-between">
+      <div>
+        <div class="logo mb-4">
+          <img src="../assets/EcoRoam-logo.png">
+        </div>
+
+        <ul class="nav flex-column text-center">
+          <li class="nav-item mb-4"><i class="bi bi-grid"></i></li>
+          <li class="nav-item mb-4"><i class="bi bi-search"></i></li>
+          <li class="nav-item mb-4 active"><i class="bi bi-calendar"></i></li>
+          <li class="nav-item mb-4"><i class="bi bi-cloud"></i></li>
+          <li class="nav-item mb-4"><i class="bi bi-calculator"></i></li>
+        </ul>
       </div>
 
-      <ul class="nav flex-column text-center">
-        <li class="nav-item mb-4"><i class="bi bi-grid"></i></li>
-        <li class="nav-item mb-4"><i class="bi bi-search"></i></li>
-        <li class="nav-item mb-4 active"><i class="bi bi-calendar"></i></li>
-        <li class="nav-item mb-4"><i class="bi bi-cloud"></i></li>
-        <li class="nav-item mb-4"><i class="bi bi-calculator"></i></li>
-      </ul>
+      <div class="text-center mb-3">
+        <i class="bi bi-person-circle"></i>
+      </div>
     </div>
 
-    <div class="text-center mb-3">
-      <i class="bi bi-person-circle"></i>
+    <!-- itinerary list section-->
+    <div id="itinerary-list-section" class="main-content flex-grow-1 p-4" style="margin-left: 70px;">
+      <!-- Header -->
+      <div class="container row">
+        <div class="container col-sm-8">
+          <h2 class="fw-bold text-white">Green Itinerary Planner</h2>
+          <p class="text-muted mb-4">Plan your eco-friendly trip with smart recommendations</p>
+        </div>
+        <div class="container col-sm-4 p-2" style="display: flex; justify-content: flex-end; align-items: center;">
+          <button class="green-bright-btn small" id="btn-show-form">
+            <i class="bi bi-stars p-2"></i>New Itinerary</button>
+        </div>
+      </div>
+      <!-- first List Card -->
+      <div class="card d-none custom-card mb-4 p-4">
+        <div class="container centre mb-3 text-center">
+          <i class="bi bi-calendar4 icon"></i>
+          <h5 class="text-white">No itineraries yet</h5>
+          <p class="text-muted">Start planning your eco-friendly travel adventure</p>
+          <button class="green-bright-btn" id="btn-show-form-first">
+            <i class="bi bi-stars p-2"></i>Create Your First Itinerary</button>
+        </div>
+      </div>
+      <div class="card custom-card col-md-4 p-4">
+        <h5 class="card-title text-white">Portland Weekend Adventure</h5>
+        <p class="card-text text-muted">Portland | Aug 15-17,
+      </div>
     </div>
-  </div> 
 
-  <!-- Main Content -->
-  <div class="main-content flex-grow-1 p-4">
+    <!-- Itinerary Form section -->
+    <div id="itinerary-form-section" class="main-content d-none flex-grow-1 p-4" style="margin-left: 70px;">
+      <div class="container-fluid">
+        <button class="back-btn  p-2 mb-4" id="back-btn">
+          <i class="bi bi-arrow-left p-2"></i>Back to List</button>
+        <h2 class="fw-bold text-white">Create New Itinerary</h2>
+        <p class="text-muted mb-4">Fill in your preferences and let AI generate your eco-friendly plan</p>
 
-    <!-- Header -->
-    <h2 class="fw-bold text-white">Green Itinerary Planner</h2>
-    <p class="text-light mb-4">Plan your eco-friendly trip with smart recommendationsPage Subheader</p>
+        <div class="card custom-card mb-4 p-2">
+          <div class="card-body">
+            <h5 class="card-title text-white">Trip Details</h5>
+            <p class="card-text text-muted">Tell us about your travel preferences</p>
 
-    <!-- Card -->
-    <div class="card custom-card mb-4 p-4">
-      <h5 class="text-white">Card Header</h5>
-      <p class="text-muted">Card Subheader</p>
+            <form>
+              <div class="mb-3">
+                <label for="destination" class="form-label text-white">Trip Title</label>
+                <input type="text" class="custom-select form-control text-white" id="TripTitle"
+                  placeholder="E.g., Portland Weekend Adventure">
+              </div>
+              <div class="row">
+                <div class=" col-md-6 mb-3">
+                  <label for="destination" class="form-label text-white">Destination City *</label>
+                  <select class="form-select text-white custom-select" id="destination" required>
+                    <option value="">Select city</option>
+                    <option>Seattle</option>
+                    <option>San Francisco</option>
+                    <option>Portland</option>
+                    <option>Denver</option>
+                    <option>Austin</option>
+                    <option>Boston</option>
+                  </select>
+                </div>
+                <div class=" col-md-6 mb-3">
+                  <label for="budget" class="form-label text-white">Budget (USD) *</label>
+                  <input type="number" class="form-control custom-select text-white" id="budget"
+                    placeholder="E.g., 1000" required>
+                  <p class="form-text text-muted small">&lt; $500: Budget | $500-$1500: Moderate | &gt; $1500: Premium
+                  </p>
+                </div>
+                <div class=" col-md-6 mb-3">
+                  <label for="startDate" class="form-label text-white">Start Date *
+                  </label>
+                  <input type="date" class="form-control custom-select" id="startDate" required>
+                </div>
+                <div class=" col-md-6 mb-3">
+                  <label for="endDate" class="form-label text-white">End Date *</label>
+                  <input type="date" class="form-control custom-select" id="endDate" required>
+                </div>
+              </div>
 
-    </div>
+              <div class="mb-3">
+                <label for="Weather Preference" class="form-label text-white">Weather Preference</label>
+                <select class="form-select text-white custom-select" id="weatherPreference">
+                  <option value="">Sunny</option>
+                  <option>Cool</option>
+                  <option>Rainy</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="activityType" class="form-label text-white">Interests Preference * (Select at least
+                  one)</label><br>
+                <label class="option-card">
+                  <input type="checkbox" name="type" value="nature">
+                  <span>Nature</span>
+                </label>
 
-  </div>
+                <label class="option-card">
+                  <input type="checkbox" name="type" value="food">
+                  <span>Food</span>
+                </label>
+                <label class="option-card">
+                  <input type="checkbox" name="type" value="culture">
+                  <span>Culture</span>
+                </label>
+                <label class="option-card">
+                  <input type="checkbox" name="type" value="adventure">
+                  <span>Adventure</span>
+                </label>
+              </div>
+              <button type="button" id="btn-generate-itinerary"
+                class="btn green-bright-btn flex-grow-1 align-items-center w-100">
+                <i class="bi bi-stars"></i> Generate eco-friendly Itinerary </button>
+            </form>
+          </div>
+        </div>
+      </div>
+  
+    <div id="itinerary-result-section" class="d-none main-content">
+      <div class="container-fluid">
+        <div class="card custom-card mb-4 p-2">
+          <div class="card-body">
+            <h5 class="fw-bold text-white gap-2 d-flex align-items-center">
+              <i class="bi bi-stars"></i>
+              <i class="bi bi-leaf"></i>Your Eco-Friendly Travel Plan
+            </h5>
+            <p class="text-muted mb-4">Generated based on your interests, budget, and weather conditions</p>
 
-</div>
+            <div class="timeline">
+              <div class="timeline-marker">1</div>
+              <div class="timeline-item">
+                <div class="timeline-content">
+                  <h6 class="text-white">Day 1</h6>
+                  <div class="activity-card d-flex align-items-center justify-content-between">
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="/assets/mountain.jpg" class="activity-img">
 
-<script
-src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-
-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
-crossorigin="anonymous"></script>
+                      <div>
+                        <h6 class="text-white mb-1">Sustainable Seafood Co.</h6>
+                        <small class="text-muted">Restaurant</small>
+
+                        <div class="mt-2">
+                          <span class="tag">Low CO₂</span>
+                          <span class="tag">Eco Choice</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="co2-badge">
+                      🌿 6 kg
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="timeline">
+             <div class="timeline-marker">2</div>
+              <div class="timeline-item">
+                <div class="timeline-content">
+                  <h6 class="text-white">Day 2</h6>
+                  <div class="activity-card d-flex align-items-center justify-content-between">
+
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="/assets/mountain.jpg" class="activity-img">
+
+                      <div>
+                        <h6 class="text-white mb-1">Green Art Museum</h6>
+                        <small class="text-muted">Museum</small>
+                        <div class="mt-2">
+                          <span class="tag">Low CO₂</span>
+                          <span class="tag">Eco Choice</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="co2-badge">
+                      🌿 6 kg
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button id="btn-save-itinerary" class="btn green-bright-btn  flex-grow-1 align-items-center w-100">
+              <i class="bi bi-download"></i> Save Itinerary
+            </button>
+          </div>
+        </div>
+        </div>
 
 </body>
+<script src="./js/itinerary.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-
+k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
+
 </html>

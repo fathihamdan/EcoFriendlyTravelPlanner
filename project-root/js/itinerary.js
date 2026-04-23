@@ -43,7 +43,7 @@ function saveItinerary() {
     itineraryFormView.classList.add('d-none');
     itineraryResultView.classList.add('d-none');
     itineraryPageView.classList.remove('d-none');
-    itineraryListCard.classList.remove('d-none');
+    itineraryListCardContainer.classList.remove('d-none');
 
 
 }

@@ -66,7 +66,7 @@
         </div>
       </div>
       <!-- first List Card -->
-      <div class="card d-none custom-card mb-4 p-4" id="firstListCard">
+      <div class="card custom-card mb-4 p-4" id="firstListCard">
         <div class="container centre mb-3 text-center">
           <i class="bi bi-calendar4 icon"></i>
           <h5 class="text-white">No itineraries yet</h5>
@@ -76,29 +76,29 @@
         </div>
       </div>
       <!-- Itinerary Cards -->
-      <div class="row g-3" id="itineraryListCardContainer">
+      <div class="row g-3 d-none" id="itineraryListCardContainer">
         <div class="col-md-4">
-        <div class="card custom-card p-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5 class="text-white mb-1">Green Art Museum</h5>
-            <span class="co2-badge-list justify-content-end">🌿 6 kg</span>
-          </div>
-          <div class="d-flex align-items-center gap-2 ">
-            <i class="bi bi-geo-alt d-flex gap-2"></i>
-            <p class="text-muted">Langkawi</p>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-calendar4 d-flex gap-2"></i>
-            <p class="text-muted">Aug 15 - Aug 17</p>
-          </div>
-          <span class="tag">Nature</span>
-          <div class="d-flex mt-3 gap-2">
-            <button class="btn green-bright-btn flex-grow-1">View</button>
-            <button class="btn btn-danger">Delete</button>
+          <div class="card custom-card p-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="text-white mb-1">Green Art Museum</h5>
+              <span class="co2-badge-list justify-content-end">🌿 6 kg</span>
+            </div>
+            <div class="d-flex my-2 align-items-center gap-2 ">
+              <i class="bi bi-geo-alt gap-2"></i>
+              <p class="text-muted mb-0">Langkawi</p>
+            </div>
+            <div class="d-flex my-1 align-items-center gap-2">
+              <i class="bi bi-calendar4 gap-2"></i>
+              <p class="text-muted mb-0">Aug 15 - Aug 17</p>
+            </div>
+            <span class="tag my-1">Nature</span>
+            <div class="d-flex mt-3 gap-2">
+              <button class="btn green-bright-btn flex-grow-1">View</button>
+              <button class="btn btn-danger">Delete</button>
+            </div>
           </div>
         </div>
-        </div>
-        
+
       </div>
 
     </div>
@@ -184,13 +184,13 @@
             </div>
             <button type="button" id="btn-generate-itinerary"
               class="btn green-bright-btn flex-grow-1 align-items-center w-100">
-              <i class="bi bi-stars"></i> Generate eco-friendly Itinerary </button>
+              <i class="bi bi-stars me-2"></i> Generate eco-friendly Itinerary </button>
           </form>
         </div>
       </div>
     </div>
 
-    <div id="itinerary-result-section" class="d-none main-content">
+    <div id="itinerary-result-section" class="d-none">
       <div class="container-fluid">
         <div class="card custom-card mb-4 p-2">
           <div class="card-body">
@@ -255,12 +255,13 @@
               </div>
             </div>
             <button id="btn-save-itinerary" class="btn green-bright-btn  flex-grow-1 align-items-center w-100">
-              <i class="bi bi-download"></i> Save Itinerary
+              <i class="bi bi-download me-2"></i> Save Itinerary
             </button>
           </div>
         </div>
       </div>
-
+    </div>
+  </div>
 </body>
 <script src="./js/itinerary.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-

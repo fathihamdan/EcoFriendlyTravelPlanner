@@ -6,7 +6,6 @@
   background-color: #0b1f26;
   color: #9fb3c8;
   height: 100vh;
-  position: fixed;
   z-index: 1000;
   padding: 15px 0;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -54,15 +53,10 @@
   border-radius: 2px;
 }
 
-.sidebar .nav-item,
+.sidebar .nav-item, 
 .sidebar .text-center {
   transition: all 0.3s ease;
   cursor: pointer;
-}
-
-.sidebar .nav-item:hover,
-.sidebar .text-center:hover {
-  transform: translateX(3px);
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -70,7 +64,6 @@
   color: white;
   min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #0a1a1f 0%, #0d262e 100%);
 }
 
 /* ===== CARDS ===== */
@@ -80,28 +73,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   border-radius: 15px;
   backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-}
-
-.custom-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-}
-
-/* Profile Card */
-.profile-card {
-  background: rgba(20, 40, 50, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   padding: 1.8rem;
-  transition: all 0.3s ease;
-}
-
-.profile-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* Page Header */
@@ -974,7 +946,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   color: white;
 }
 
-/* Inputs */
+/* Inputs 
 .custom-input {
   background-color: #1e2f3d !important;
   border: 1px solid #2e4057 !important;
@@ -985,6 +957,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .custom-input::placeholder {
   color: #6c8a9a;
 }
+*/
 .custom-input option {
   background-color: #1e2f3d;
 }

@@ -1,294 +1,286 @@
 // ========== USER DATA MANAGEMENT ==========
 
-// Get logged in user from localStorage
+/**
+ * Returns the currently logged-in user object from localStorage,
+ * or null if no session is found.
+ */
 function getLoggedInUser() {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const loggedInEmail = localStorage.getItem('loggedInEmail');
-    return users.find(user => user.email === loggedInEmail);
+    if (!loggedInEmail) return null;
+    return users.find(user => user.email === loggedInEmail) || null;
 }
 
-// Update user data in localStorage
+/**
+ * Merges updatedData into the current user's record in localStorage
+ * and refreshes the sessionStorage snapshot.
+ */
 function updateUserData(updatedData) {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     const userIndex = users.findIndex(user => user.email === loggedInEmail);
-    
-    if (userIndex !== -1) {
-        users[userIndex] = { ...users[userIndex], ...updatedData };
-        localStorage.setItem('users', JSON.stringify(users));
-        
-        // Also update session for current user
-        sessionStorage.setItem('currentUser', JSON.stringify(users[userIndex]));
-        
-        showToast('Profile updated successfully!', 'success');
-        return true;
-    }
-    return false;
+
+    if (userIndex === -1) return false;
+
+    users[userIndex] = { ...users[userIndex], ...updatedData };
+    localStorage.setItem('users', JSON.stringify(users));
+    sessionStorage.setItem('currentUser', JSON.stringify(users[userIndex]));
+    return true;
 }
 
-// Load profile data
+// ========== LOAD PROFILE DATA ==========
+
+/**
+ * Populates all profile fields from the logged-in user's stored data.
+ * Falls back to splitting the `name` field if firstName/lastName were
+ * not stored separately (e.g. registered with the old auth flow).
+ */
 function loadProfileData() {
     const user = getLoggedInUser();
-    
-    if (user) {
-        // Set form fields
-        document.getElementById('firstName').value = user.firstName || '';
-        document.getElementById('lastName').value = user.lastName || '';
-        document.getElementById('phoneField').value = user.phone || '';
-        document.getElementById('emailField').value = user.email || '';
-        
-        // Update display fields
-        const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim();
-        document.getElementById('displayName').textContent = fullName || user.email.split('@')[0];
-        document.getElementById('displayPhone').textContent = user.phone || 'Not provided';
-        
-        // Load avatar if exists
-        if (user.avatar) {
-            const avatarDiv = document.getElementById('avatarPlaceholder');
-            avatarDiv.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-            avatarDiv.classList.remove('avatar-placeholder');
-        }
-    } else {
-        // If no user logged in, redirect to login
+
+    if (!user) {
+        // Not logged in — redirect to login
         window.location.href = 'login.html';
+        return;
+    }
+
+    // ── Resolve first / last name ──────────────────────────────────────────
+    // Newer registrations store firstName / lastName directly.
+    // Older registrations may only have a combined `name` field.
+    let firstName = user.firstName || '';
+    let lastName  = user.lastName  || '';
+
+    if (!firstName && !lastName && user.name) {
+        const parts = user.name.trim().split(' ');
+        firstName = parts[0] || '';
+        lastName  = parts.slice(1).join(' ') || '';
+    }
+
+    // ── Populate form fields ───────────────────────────────────────────────
+    document.getElementById('firstName').value  = firstName;
+    document.getElementById('lastName').value   = lastName;
+    document.getElementById('phoneField').value = user.phone || '';
+    document.getElementById('emailField').value = user.email || '';
+
+    // ── Update avatar display section ─────────────────────────────────────
+    const fullName = `${firstName} ${lastName}`.trim();
+    document.getElementById('displayName').textContent =
+        fullName || user.email.split('@')[0];
+
+    document.getElementById('displayPhone').textContent =
+        user.phone || 'Not provided';
+
+    // ── Restore saved avatar if present ───────────────────────────────────
+    if (user.avatar) {
+        const avatarDiv = document.getElementById('avatarPlaceholder');
+        avatarDiv.innerHTML =
+            `<img src="${user.avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        avatarDiv.classList.remove('avatar-placeholder');
     }
 }
 
 // ========== PROFILE FUNCTIONS ==========
 
-// Save profile (first name, last name, phone number)
+/** Save first name, last name and phone number. */
 function saveProfile() {
     const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const phone = document.getElementById('phoneField').value.trim();
-    
-    // Validation
+    const lastName  = document.getElementById('lastName').value.trim();
+    const phone     = document.getElementById('phoneField').value.trim();
+
     if (!firstName) {
-        showToast('Please enter your first name', 'error');
+        showToast('Please enter your first name.', 'error');
         return;
     }
-    
     if (!lastName) {
-        showToast('Please enter your last name', 'error');
+        showToast('Please enter your last name.', 'error');
         return;
     }
-    
     if (!phone) {
-        showToast('Please enter your phone number', 'error');
+        showToast('Please enter your phone number.', 'error');
         return;
     }
-    
-    // Phone number validation (basic)
-    const phoneRegex = /^[\+\d\s\-\(\)]{8,20}$/;
+
+    const phoneRegex = /^[\+\d\s\-\(\)]{7,20}$/;
     if (!phoneRegex.test(phone)) {
-        showToast('Please enter a valid phone number', 'error');
+        showToast('Please enter a valid phone number.', 'error');
         return;
     }
-    
-    // Update user data
-    const success = updateUserData({
-        firstName: firstName,
-        lastName: lastName,
-        phone: phone
-    });
-    
+
+    const success = updateUserData({ firstName, lastName, phone });
+
     if (success) {
-        // Update display fields
-        const fullName = `${firstName} ${lastName}`;
-        document.getElementById('displayName').textContent = fullName;
+        document.getElementById('displayName').textContent  = `${firstName} ${lastName}`;
         document.getElementById('displayPhone').textContent = phone;
+        showToast('Profile updated successfully!', 'success');
+    } else {
+        showToast('Could not update profile. Please log in again.', 'error');
     }
 }
 
-// Avatar upload
+// ── Avatar ──────────────────────────────────────────────────────────────────
+
 function triggerAvatarUpload() {
     document.getElementById('avatarUpload').click();
 }
 
 function uploadAvatar(input) {
-    if (input.files && input.files[0]) {
-        const file = input.files[0];
-        
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-            showToast('Please select an image file', 'error');
-            return;
-        }
-        
-        // Validate file size (max 2MB)
-        if (file.size > 2 * 1024 * 1024) {
-            showToast('Image size should be less than 2MB', 'error');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const avatarUrl = e.target.result;
-            
-            // Update user data with avatar
-            updateUserData({ avatar: avatarUrl });
-            
-            // Update avatar display
-            const avatarDiv = document.getElementById('avatarPlaceholder');
-            avatarDiv.innerHTML = `<img src="${avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-            avatarDiv.classList.remove('avatar-placeholder');
-            
-            showToast('Profile picture updated!', 'success');
-        };
-        reader.readAsDataURL(file);
+    if (!input.files || !input.files[0]) return;
+
+    const file = input.files[0];
+
+    if (!file.type.startsWith('image/')) {
+        showToast('Please select an image file.', 'error');
+        return;
     }
+    if (file.size > 2 * 1024 * 1024) {
+        showToast('Image must be smaller than 2 MB.', 'error');
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const avatarUrl = e.target.result;
+        updateUserData({ avatar: avatarUrl });
+
+        const avatarDiv = document.getElementById('avatarPlaceholder');
+        avatarDiv.innerHTML =
+            `<img src="${avatarUrl}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        avatarDiv.classList.remove('avatar-placeholder');
+
+        showToast('Profile picture updated!', 'success');
+    };
+    reader.readAsDataURL(file);
 }
 
 // ========== PASSWORD FUNCTIONS ==========
 
 function changePassword() {
     const currentPassword = document.getElementById('currentPassword').value;
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    // Validation
+    const newPassword     = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmNewPassword').value;
+
     if (!currentPassword || !newPassword || !confirmPassword) {
-        showToast('Please fill in all password fields', 'error');
+        showToast('Please fill in all password fields.', 'error');
         return;
     }
-    
     if (newPassword !== confirmPassword) {
-        showToast('New password and confirm password do not match', 'error');
+        showToast('New password and confirmation do not match.', 'error');
         return;
     }
-    
     if (newPassword.length < 6) {
-        showToast('New password must be at least 6 characters long', 'error');
+        showToast('New password must be at least 6 characters.', 'error');
         return;
     }
-    
-    // Get current user
+
     const user = getLoggedInUser();
-    
-    if (user && user.password !== currentPassword) {
-        showToast('Current password is incorrect', 'error');
+    if (!user) {
+        showToast('Session expired. Please log in again.', 'error');
         return;
     }
-    
-    // Update password
+    if (user.password !== currentPassword) {
+        showToast('Current password is incorrect.', 'error');
+        return;
+    }
+
     const success = updateUserData({ password: newPassword });
-    
+
     if (success) {
         showToast('Password changed successfully!', 'success');
-        
-        // Clear password fields
+        // Clear fields and close modal
         document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
-        
-        // Close modal
+        document.getElementById('newPassword').value     = '';
+        document.getElementById('confirmNewPassword').value = '';
         closeModal('passwordModal');
+    } else {
+        showToast('Could not update password. Please log in again.', 'error');
     }
 }
 
 // ========== ACCOUNT FUNCTIONS ==========
 
 function deactivateAccount() {
-    if (confirm('Are you sure you want to deactivate your account? This action cannot be undone.')) {
-        const confirmText = prompt('Type "DEACTIVATE" to confirm account deactivation:');
-        if (confirmText === 'DEACTIVATE') {
-            // Remove user data
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const loggedInEmail = localStorage.getItem('loggedInEmail');
-            const updatedUsers = users.filter(user => user.email !== loggedInEmail);
-            localStorage.setItem('users', JSON.stringify(updatedUsers));
-            
-            // Clear session
-            localStorage.removeItem('loggedInEmail');
-            sessionStorage.clear();
-            
-            showToast('Your account has been deactivated. We\'re sad to see you go!', 'success');
-            
-            // Redirect to login after short delay
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 1500);
-        } else if (confirmText !== null) {
-            alert('Account deactivation cancelled - incorrect confirmation text');
-        }
+    if (!confirm('Are you sure you want to deactivate your account? This cannot be undone.')) return;
+
+    const confirmText = prompt('Type "DEACTIVATE" to confirm:');
+    if (confirmText !== 'DEACTIVATE') {
+        if (confirmText !== null) alert('Deactivation cancelled — incorrect confirmation text.');
+        return;
     }
+
+    const users         = JSON.parse(localStorage.getItem('users') || '[]');
+    const loggedInEmail = localStorage.getItem('loggedInEmail');
+    const updatedUsers  = users.filter(u => u.email !== loggedInEmail);
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+    localStorage.removeItem('loggedInEmail');
+    sessionStorage.clear();
+
+    showToast("Your account has been deactivated. We're sad to see you go!", 'success');
+    setTimeout(() => { window.location.href = 'login.html'; }, 1500);
 }
 
 function logout() {
-    if (confirm('Are you sure you want to log out?')) {
-        // Clear session data
-        localStorage.removeItem('loggedInEmail');
-        sessionStorage.clear();
-        
-        showToast('Logged out successfully!', 'success');
-        
-        // Redirect to login page
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 500);
-    }
+    if (!confirm('Are you sure you want to log out?')) return;
+
+    localStorage.removeItem('loggedInEmail');
+    sessionStorage.clear();
+
+    showToast('Logged out successfully!', 'success');
+    setTimeout(() => { window.location.href = 'login.html'; }, 600);
 }
 
 // ========== UI HELPER FUNCTIONS ==========
 
-// Toast notification
 function showToast(message, type = 'success') {
-    // Remove existing toast
-    const existingToast = document.querySelector('.toast-notification');
-    if (existingToast) {
-        existingToast.remove();
-    }
-    
-    // Create new toast
+    const existing = document.querySelector('.toast-notification');
+    if (existing) existing.remove();
+
     const toast = document.createElement('div');
-    toast.className = `toast-notification ${type === 'error' ? 'error' : ''}`;
+    toast.className = `toast-notification${type === 'error' ? ' error' : ''}`;
     toast.textContent = message;
     document.body.appendChild(toast);
-    
-    // Auto remove after 3 seconds
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+
+    setTimeout(() => toast.remove(), 3000);
 }
 
-// Modal functions
 function openModal(id) {
     document.getElementById(id).classList.add('active');
 }
 
 function closeModal(id) {
     document.getElementById(id).classList.remove('active');
-    // Clear password fields when closing modal
     if (id === 'passwordModal') {
-        document.getElementById('currentPassword').value = '';
-        document.getElementById('newPassword').value = '';
-        document.getElementById('confirmPassword').value = '';
+        document.getElementById('currentPassword').value    = '';
+        document.getElementById('newPassword').value        = '';
+        document.getElementById('confirmNewPassword').value = '';
     }
 }
 
-// Close modal on backdrop click
+// Close modal when clicking the backdrop
 document.querySelectorAll('.modal-overlay').forEach(el => {
     el.addEventListener('click', e => {
         if (e.target === el) {
             el.classList.remove('active');
-            // Clear password fields
             if (el.id === 'passwordModal') {
-                document.getElementById('currentPassword').value = '';
-                document.getElementById('newPassword').value = '';
-                document.getElementById('confirmPassword').value = '';
+                document.getElementById('currentPassword').value    = '';
+                document.getElementById('newPassword').value        = '';
+                document.getElementById('confirmNewPassword').value = '';
             }
         }
     });
 });
 
-// ========== NAVIGATION FUNCTIONS ==========
+// ========== NAVIGATION ==========
 
 function navigateTo(page) {
     localStorage.setItem('currentPage', page);
-    switch(page) {
-        case 'dashboard': window.location.href = 'dashboard.html'; break;
-        case 'search': window.location.href = 'search.html'; break;
-        case 'itinerary': window.location.href = 'itinerary.html'; break;
-        case 'weather': window.location.href = 'weather.html'; break;
-    }
+    const routes = {
+        dashboard : 'dashboard.html',
+        search    : 'search.html',
+        itinerary : 'itinerary.html',
+        weather   : 'weather.html'
+    };
+    if (routes[page]) window.location.href = routes[page];
 }
+
+// ========== INIT ==========
+loadProfileData();

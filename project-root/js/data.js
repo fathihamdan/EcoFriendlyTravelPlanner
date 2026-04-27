@@ -1,6 +1,7 @@
 const places = [
   {
     //accommodations
+    id: "acc1",
     name: "DoubleTree by Hilton Putrajaya Lakeside",
     location: "Putrajaya",
     rating: 4,
@@ -12,6 +13,7 @@ const places = [
     tags: ["Reduce Food Waste", "Water Conservation", "Energy Efficiency"]
   },
   {
+    id: "acc2",
     name: "Pulse Grande Hotel",
     location: "Putrajaya",
     rating: 3,
@@ -23,10 +25,11 @@ const places = [
     tags: ["Natural Ventilation", "Green Surroundings"]
   },
   {
+    id: "acc3",
     name: "Zenith Putrajaya",
     location: "Putrajaya",
     rating: 3,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/Zenith.png",
     co2: "12 kg CO₂ saved",
     type: "Accommodation",
@@ -34,10 +37,11 @@ const places = [
     tags: ["Smart Energy Management", "Efficient Lighting"]
   },
   {
+    id: "acc4",
     name: "Le Meridian Putrajaya",
     location: "Putrajaya",
     rating: 3,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/LeMeridian.png",
     co2: "12 kg CO₂ saved",
     type: "Accommodation",
@@ -45,10 +49,11 @@ const places = [
     tags: ["Energy-Saving System", "Waste Reduction"]
   },
   {
+    id: "acc5",
     name: "Uptown Eco Hotel",
     location: "Kuala Terengganu",
     rating: 3,
-    price: "Low",
+    price: "Budget",
     image: "../assets/Accommodation/UptownEcoHotel.png",
     co2: "12 kg CO₂ saved",
     type: "Accommodation",
@@ -56,10 +61,11 @@ const places = [
     tags: ["Minimal Waste Concept", "Energy-Saving Lighting"]
   },
   {
+    id: "acc6",
     name: "Taaras Beach & Spa Resort",
     location: "Kuala Terengganu",
     rating: 4,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/TaarasResort.png",
     co2: "15 kg CO₂ saved",
     type: "Accommodation",
@@ -67,10 +73,11 @@ const places = [
     tags: ["Marine Conservation", "Sustainable Tourism Practices"]
   },
   {
+    id: "acc7",
     name: "Summer Bay Lang Tengah Island Resort",
     location: "Kuala Terengganu",
     rating: 4,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/SummerBay.png",
     co2: "15 kg CO₂ saved",
     type: "Accommodation",
@@ -78,10 +85,11 @@ const places = [
     tags: ["Low-density Development", "Waste Management", "Eco Activities"]
   },
   {
+    id: "acc8",
     name: "Duyong Marina Resort",
     location: "Kuala Terengganu",
     rating: 3,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/DuyongMarina.png",
     co2: "12 kg CO₂ saved",
     type: "Accommodation",
@@ -89,10 +97,11 @@ const places = [
     tags: ["Basic Resources", "Natural Surroundings"]
   },
   {
+    id: "acc9",
     name: "Casa del Rio Melaka",
     location: "Bandaraya Melaka",
     rating: 4,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/CasaDelRio.png",
     co2: "12 kg CO₂ saved",
     type: "Accommodation",
@@ -100,10 +109,11 @@ const places = [
     tags: ["Water-saving Systems", "Eco-friendly Materials"]
   },
   {
+    id: "acc10",
     name: "The Shore Hotel & Residences",
     location: "Bandaraya Melaka",
     rating: 3,
-    price: "Medium",
+    price: "Moderate",
     image: "../assets/Accommodation/TheShore.png",
     co2: "10 kg CO₂ saved",
     type: "Accommodation",
@@ -111,10 +121,11 @@ const places = [
     tags: ["Energy Efficiency", "Reduced Plastic"]
   },
   {
+    id: "acc11",
     name: "Hatten Hotel Melaka",
     location: "Bandaraya Melaka",
     rating: 3,
-    price: "Medium",
+    price: "Moderate",
     image: "../assets/Accommodation/HattenHotel.png",
     co2: "9 kg CO₂ saved",
     type: "Accommodation",
@@ -122,10 +133,11 @@ const places = [
     tags: ["Energy-saving Lighting", "Water Conservation"]
   },
   {
+    id: "acc12",
     name: "Liu Men",
     location: "Bandaraya Melaka",
     rating: 4,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/LiuMen.png",
     co2: "11 kg CO₂ saved",
     type: "Accommodation",
@@ -133,10 +145,11 @@ const places = [
     tags: ["Building Reuse", "Reduced Material Waste"]
   },
   {
+    id: "acc13",
     name: "The Datai Langkawi",
     location: "Langkawi",
     rating: 5,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/TheDatai.png",
     co2: "20 kg CO₂ saved",
     type: "Accommodation",
@@ -144,10 +157,11 @@ const places = [
     tags: ["Rainforest Conservation", "Coral Reef Restoration", "No Plastic"]
   },
   {
+    id: "acc14",
     name: "Ambong Rainforest Retreat",
     location: "Langkawi",
     rating: 5,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/AmbongRainforest.png",
     co2: "18 kg CO₂ saved",
     type: "Accommodation",
@@ -155,10 +169,11 @@ const places = [
     tags: ["Minimal Land Clearing", "Local Sourcing", "Eco-conscious Operations"]
   },
   {
+    id: "acc15",
     name: "The Frangipani Langkawi Resort & Spa",
     location: "Langkawi",
     rating: 5,
-    price: "Medium",
+    price: "Moderate",
     image: "../assets/Accommodation/TheFrangipani.png",
     co2: "17 kg CO₂ saved",
     type: "Accommodation",
@@ -166,10 +181,11 @@ const places = [
     tags: ["Solar Panels", "Wastewater Recycling", "Organic Garden", "Plastic Reduction"]
   },
   {
+    id: "acc16",
     name: "Berjaya Langkawi Resort",
     location: "Langkawi",
     rating: 4,
-    price: "High",
+    price: "Premium",
     image: "../assets/Accommodation/BerjayaLangkawi.png",
     co2: "16 kg CO₂ saved",
     type: "Accommodation",
@@ -178,6 +194,7 @@ const places = [
   },
     //Restaurants
   {
+    id: "res1",
     name: "BMS Organics",
     location: "Putrajaya",
     rating: 5,
@@ -189,6 +206,7 @@ const places = [
     tags: ["Organic Ingredients", "Plant-based", "Sustainable Sourcing"]
   },
   {
+    id: "res2",
     name: "Salad Atelier",
     location: "Putrajaya",
     rating: 5,
@@ -200,6 +218,7 @@ const places = [
     tags: ["Local Sourcing", "Healthy Food", "Low Processing"]
   },
   {
+    id: "res3",
     name: "Summer Palace Restaurant",
     location: "Putrajaya",
     rating: 3,
@@ -211,6 +230,7 @@ const places = [
     tags: ["Seasonal Ingredients", "Local Sourcing"]
   },
   {
+    id: "res4",
     name: "Cili Kampung",
     location: "Putrajaya",
     rating: 3,
@@ -222,6 +242,7 @@ const places = [
     tags: ["Local Ingredients", "Support Local Farming"]
   },
   {
+    id: "res5",
     name: "Kenny Hills Bakers",
     location: "Putrajaya",
     rating: 3,
@@ -233,6 +254,7 @@ const places = [
     tags: ["Organic Ingredients", "Artisanal Production"]
   },
   {
+    id: "res6",
     name: "Rasa MamaKim Wellness Kitchen",
     location: "Kuala Terengganu",
     rating: 5,
@@ -244,6 +266,7 @@ const places = [
     tags: ["Healthy Eating", "Low Processing", "Sustainable Diet"]
   },
   {
+    id: "res7",
     name: "Chef Wan Meatless Cuisine",
     location: "Kuala Terengganu",
     rating: 3,
@@ -255,6 +278,7 @@ const places = [
     tags: ["Plant-based", "Low Carbon Diet"]
   },
   {
+    id: "res8",
     name: "Happy Vegetarian Restaurant",
     location: "Kuala Terengganu",
     rating: 3,
@@ -266,6 +290,7 @@ const places = [
     tags: ["Vegetarian", "Low Impact", "Simple Cooking"]
   },
   {
+    id: "res9",
     name: "MR Celup Tepung Station",
     location: "Kuala Terengganu",
     rating: 3,
@@ -277,6 +302,7 @@ const places = [
     tags: ["Local Sourcing", "Low Processing"]
   },
   {
+    id: "res10",
     name: "Botanist Veggie Cafe",
     location: "Bandaraya Melaka",
     rating: 5,
@@ -288,6 +314,7 @@ const places = [
     tags: ["Plant-based", "Organic Options"]
   },
   {
+    id: "res11",
     name: "Green Reaper Vegetarian Eatery",
     location: "Bandaraya Melaka",
     rating: 5,
@@ -299,6 +326,7 @@ const places = [
     tags: ["Plant-based", "Eco Awareness"]
   },
   {
+    id: "res12",
     name: "Greenbite Cafe",
     location: "Bandaraya Melaka",
     rating: 3,
@@ -310,6 +338,7 @@ const places = [
     tags: ["Vegetarian", "Low Impact"]
   },
   {
+    id: "res13",
     name: "Wild Coriander Melaka",
     location: "Bandaraya Melaka",
     rating: 3,
@@ -321,6 +350,7 @@ const places = [
     tags: ["Local Ingredients", "Heritage Preservation"]
   },
   {
+    id: "res14",
     name: "The Daily Fix Cafe",
     location: "Bandaraya Melaka",
     rating: 3,
@@ -332,6 +362,7 @@ const places = [
     tags: ["Adaptive Reuse", "Local Ingredients"]
   },
   {
+    id: "res15",
     name: "The Fat Frog",
     location: "Langkawi",
     rating: 5,
@@ -343,6 +374,7 @@ const places = [
     tags: ["Organic Food", "Plant-based"]
   },
   {
+    id: "res16",
     name: "Pegaga Langkawi Vegan Experience",
     location: "Langkawi",
     rating: 5,
@@ -354,6 +386,7 @@ const places = [
     tags: ["Vegan", "Local Ingredients"]
   },
   {
+    id: "res17",
     name: "Indiana Vegan Cafe Langkawi",
     location: "Langkawi",
     rating: 5,
@@ -365,6 +398,7 @@ const places = [
     tags: ["Vegan", "Healthy Food"]
   },
   {
+    id: "res18",
     name: "The Dining Room",
     location: "Langkawi",
     rating: 5,
@@ -376,6 +410,7 @@ const places = [
     tags: ["Farm-to-table", "Local Sourcing"]
   },
   {
+    id: "res19",
     name: "Ikan-Ikan",
     location: "Langkawi",
     rating: 3,
@@ -388,6 +423,7 @@ const places = [
   },
     //Activities
   {
+    id: "act1",
     name: "Putrajaya Wetlands Park",
     location: "Putrajaya",
     rating: 4,
@@ -399,6 +435,7 @@ const places = [
     tags: ["Conservation", "Wildlife Protection", "Low Impact"]
   },
   {
+    id: "act2",
     name: "Putrajaya Lake Eco Cruise",
     location: "Putrajaya",
     rating: 4,
@@ -410,6 +447,7 @@ const places = [
     tags: ["Electric Boats", "Zero Emissions"]
   },
   {
+    id: "act3",
     name: "Taman Botani Putrajaya",
     location: "Putrajaya",
     rating: 5,
@@ -421,6 +459,7 @@ const places = [
     tags: ["Conservation", "Cycling", "No Vehicles"]
   },
   {
+    id: "act4",
     name: "Putrajaya Challenge Park",
     location: "Putrajaya",
     rating: 3,
@@ -432,6 +471,7 @@ const places = [
     tags: ["Non-motorized", "Low Impact"]
   },
   {
+    id: "act5",
     name: "Pulau Kapas Turtle Conservation",
     location: "Kuala Terengganu",
     rating: 5,
@@ -443,6 +483,7 @@ const places = [
     tags: ["Wildlife Conservation", "Guided Tours", "Low Impact"]
   },
   {
+    id: "act6",
     name: "Sungai Terengganu Heritage Cruise",
     location: "Kuala Terengganu",
     rating: 3,
@@ -454,6 +495,7 @@ const places = [
     tags: ["Cultural", "Low Impact"]
   },
   {
+    id: "act7",
     name: "Setiu Wetlands Eco Safari",
     location: "Kuala Terengganu",
     rating: 5,
@@ -465,6 +507,7 @@ const places = [
     tags: ["Conservation", "Kayaking", "Low Impact"]
   },
   {
+    id: "act8",
     name: "Muzium Negeri Terengganu",
     location: "Kuala Terengganu",
     rating: 4,
@@ -476,6 +519,7 @@ const places = [
     tags: ["Cultural Preservation", "Low Impact"]
   },
   {
+    id: "act9",
     name: "Melaka River Eco Cruise",
     location: "Bandaraya Melaka",
     rating: 3,
@@ -487,6 +531,7 @@ const places = [
     tags: ["Cultural", "Low Impact"]
   },
   {
+    id: "act10",
     name: "Melaka Bird Park",
     location: "Bandaraya Melaka",
     rating: 4,
@@ -498,6 +543,7 @@ const places = [
     tags: ["Wildlife Conservation", "Low Impact"]
   },
   {
+    id: "act11",
     name: "Sungai Udang Mangrove Tour",
     location: "Bandaraya Melaka",
     rating: 5,
@@ -509,6 +555,7 @@ const places = [
     tags: ["Conservation", "Eco Tourism"]
   },
   {
+    id: "act12",
     name: "Heritage Walk Trail",
     location: "Bandaraya Melaka",
     rating: 4,
@@ -520,6 +567,7 @@ const places = [
     tags: ["Walking", "Heritage Preservation"]
   },
   {
+    id: "act13",
     name: "Kilim Geoforest Park Tour",
     location: "Langkawi",
     rating: 5,
@@ -531,6 +579,7 @@ const places = [
     tags: ["Geopark", "Conservation"]
   },
   {
+    id: "act14",
     name: "Langkawi SkyBridge",
     location: "Langkawi",
     rating: 4,
@@ -542,6 +591,7 @@ const places = [
     tags: ["Eco Tourism", "Low Impact"]
   },
   {
+    id: "act16",
     name: "Black Sand Beach Trail",
     location: "Langkawi",
     rating: 4,
@@ -553,6 +603,7 @@ const places = [
     tags: ["Nature", "Low Impact"]
   },
   {
+    id: "act17",
     name: "Langkawi Wildlife Park",
     location: "Langkawi",
     rating: 4,

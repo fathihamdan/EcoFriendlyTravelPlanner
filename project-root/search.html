@@ -76,16 +76,16 @@
     <div class="card custom-card mb-4 p-4">
       <!-- Search bar -->
       <div class="search-box mb-3">
-        <input type="text" class="form-control custom-input"
-          placeholder=" Search by name, description, or city...">
+        <input type="text" id="searchInput" class="form-control custom-input"
+          placeholder=" Search by name, city, type...">
       </div>
 
       <!-- Filters row -->
       <div class="container-fluid px-0">
           <div class="row g-3">
             <div class="col-md-3">
-              <select class="form-select filter-select">
-                <option>All Cities</option>
+              <select id="filterLocation" class="form-select filter-select">
+                <option value="">All Cities</option>
                 <option>Bandaraya Melaka</option>
                 <option>Kuala Terengganu</option>
                 <option>Langkawi</option>
@@ -93,24 +93,24 @@
               </select>
             </div>
             <div class="col-md-3">
-              <select class="form-select filter-select">
-                <option>All Types</option>
-                <option>Accommodations</option>
-                <option>Activities</option>
-                <option>Restaurants</option>
+              <select id="filterType" class="form-select filter-select">
+                <option value="">All Types</option>
+                <option>Accommodation</option>
+                <option>Activity</option>
+                <option>Restaurant</option>
                 <option>Transportation</option>
               </select>
             </div>
             <div class="col-md-3">
-              <select class="form-select filter-select">
-                <option>All Prices</option>
+              <select id="filterPrice" class="form-select filter-select">
+                <option value="">All Prices</option>
                 <option>Budget</option>
                 <option>Moderate</option>
                 <option>Premium</option>
               </select>
             </div>
             <div class="col-md-3">
-              <button class="btn clear-btn w-100">Clear Filters</button>
+              <button id="clearFilter" class="btn clear-btn w-100">Clear Filters</button>
             </div>
           </div>
                
@@ -122,8 +122,8 @@
     <div class="d-flex align-items-center mb-4">
 
       <div class="toggle-group">
-        <button class="toggle-btn active">All Options (14)</button>
-        <button class="toggle-btn">My Favorites (0)</button>
+        <button class="toggle-btn active" id="allBtn">All Options</button>
+        <button class="toggle-btn" id="favBtn">My Favorites</button>
       </div>
 
     </div>

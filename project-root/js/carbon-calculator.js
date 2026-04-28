@@ -176,8 +176,12 @@ function updateTotalImpact() {
   document.getElementById("offset-section").style.display = "block";
   document.getElementById("trees-count").textContent = Math.ceil(total / 21);
   document.getElementById("solar-count").textContent = Math.ceil(total / 1.5);
-  document.getElementById("credits-cost").textContent =
-    "$" + (total * 0.02).toFixed(2);
+  const creditsCost = (total * 0.02).toFixed(2);
+  document.getElementById("credits-cost").textContent = "$" + creditsCost;
+
+  // ── Persist to localStorage so dashboard can read these values ──
+  localStorage.setItem("carbonTotal",   total.toFixed(2));
+  localStorage.setItem("carbonCredits", creditsCost);
 }
 
 function generateTransportAlternatives() {

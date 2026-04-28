@@ -7,9 +7,19 @@
 body {
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
-  background: url("../../assets/mountain.jpg") no-repeat center center/cover;
   color: white;
   position: relative;
+}
+
+/* ── Page-specific backgrounds ── */
+body.login-page {
+  background: url("https://images.unsplash.com/photo-1559827260-dc66d52bef19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920")
+    no-repeat center center / cover;
+}
+
+body.register-page {
+  background: url("https://images.unsplash.com/flagged/photo-1565930456634-12bb1a0b8b72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920")
+    no-repeat center center / cover;
 }
 
 .logo img {
@@ -20,7 +30,7 @@ body {
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(7, 18, 28, 0.45);
+  background: rgba(7, 18, 28, 0.52);
   backdrop-filter: blur(2px);
 }
 

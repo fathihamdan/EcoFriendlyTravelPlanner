@@ -142,46 +142,64 @@ function calculateAccommodation() {
 function updateTotalImpact() {
   const total = currentTransportEmissions + currentAccomEmissions;
 
-  // Total Number
+  // Always update the total number
   document.getElementById("total-result").textContent = total.toFixed(2);
 
-  // Breakdown Updates
-  document.getElementById("transport-kg").textContent =
-    currentTransportEmissions.toFixed(1) + " kg";
-  document.getElementById("accom-kg").textContent =
-    currentAccomEmissions.toFixed(1) + " kg";
-  document.getElementById("impact-breakdown").style.display = "block";
+  // Only display impact breakdowns and offset suggestions if a calculation has been made (total > 0)
+  if (total > 0) {
+    // Breakdown Updates
+    document.getElementById("transport-kg").textContent =
+      currentTransportEmissions.toFixed(1) + " kg";
+    document.getElementById("accom-kg").textContent =
+      currentAccomEmissions.toFixed(1) + " kg";
+    document.getElementById("impact-breakdown").style.display = "block";
 
-  // Impact Badge
-  const impact = getImpactLevel(total);
-  const badge = document.getElementById("impact-badge");
-  badge.style.display = "inline-block";
-  badge.style.backgroundColor = impact.color;
+    // Impact Badge
+    const impact = getImpactLevel(total);
+    const badge = document.getElementById("impact-badge");
+    badge.style.display = "inline-block";
+    badge.style.backgroundColor = impact.color;
 
-  const impactLabel = document.getElementById("impact-label");
-  impactLabel.style.color = impact.text;
-  impactLabel.textContent = impact.label;
+    const impactLabel = document.getElementById("impact-label");
+    impactLabel.style.color = impact.text;
+    impactLabel.textContent = impact.label;
 
-  // Offset Icon match
-  const icon = badge.querySelector("i");
-  icon.className =
-    total <= 50
-      ? "bi bi-check-circle me-1"
-      : total <= 200
-        ? "bi bi-exclamation-triangle me-1"
-        : "bi bi-x-circle me-1";
-  icon.style.color = impact.text;
+    // Offset Icon match
+    const icon = badge.querySelector("i");
+    icon.className =
+      total <= 50
+        ? "bi bi-check-circle me-1"
+        : total <= 200
+          ? "bi bi-exclamation-triangle me-1"
+          : "bi bi-x-circle me-1";
+    icon.style.color = impact.text;
 
-  // General Offsets
-  document.getElementById("offset-section").style.display = "block";
-  document.getElementById("trees-count").textContent = Math.ceil(total / 21);
-  document.getElementById("solar-count").textContent = Math.ceil(total / 1.5);
-  const creditsCost = (total * 0.02).toFixed(2);
-  document.getElementById("credits-cost").textContent = "$" + creditsCost;
+    // General Offsets
+    document.getElementById("offset-section").style.display = "block";
+    document.getElementById("trees-count").textContent = Math.ceil(total / 21);
+    document.getElementById("solar-count").textContent = Math.ceil(total / 1.5);
+    const creditsCost = (total * 0.02).toFixed(2);
+    document.getElementById("credits-cost").textContent = "$" + creditsCost;
 
-  // ── Persist to localStorage so dashboard can read these values ──
-  localStorage.setItem("carbonTotal",   total.toFixed(2));
-  localStorage.setItem("carbonCredits", creditsCost);
+    // ── Persist full state to localStorage ──
+    localStorage.setItem("carbonTotal", total.toFixed(2));
+    localStorage.setItem("carbonCredits", creditsCost);
+    localStorage.setItem(
+      "carbonTransportEmit",
+      currentTransportEmissions.toFixed(2),
+    );
+    localStorage.setItem("carbonAccomEmit", currentAccomEmissions.toFixed(2));
+    localStorage.setItem("carbonTransportMethod", currentTransportMethod);
+    localStorage.setItem("carbonTransportDist", currentTransportDistance);
+    localStorage.setItem("carbonTransportPax", currentTransportPassengers);
+    localStorage.setItem("carbonAccomType", currentAccomType);
+    localStorage.setItem("carbonAccomNights", currentAccomNights);
+  } else {
+    // Keep secondary cards hidden if there are no emissions calculated yet
+    document.getElementById("impact-breakdown").style.display = "none";
+    document.getElementById("impact-badge").style.display = "none";
+    document.getElementById("offset-section").style.display = "none";
+  }
 }
 
 function generateTransportAlternatives() {
@@ -255,4 +273,90 @@ function generateAccomAlternatives() {
   });
 
   altContainer.style.display = foundGreener ? "block" : "none";
+}
+
+function restoreState() {
+  const total = localStorage.getItem("carbonTotal");
+  if (!total) return; // nothing saved yet
+
+  // Restore variables
+  currentTransportEmissions =
+    parseFloat(localStorage.getItem("carbonTransportEmit")) || 0;
+  currentAccomEmissions =
+    parseFloat(localStorage.getItem("carbonAccomEmit")) || 0;
+  currentTransportMethod = localStorage.getItem("carbonTransportMethod") || "";
+  currentTransportDistance =
+    parseFloat(localStorage.getItem("carbonTransportDist")) || 0;
+  currentTransportPassengers =
+    parseFloat(localStorage.getItem("carbonTransportPax")) || 1;
+  currentAccomType = localStorage.getItem("carbonAccomType") || "";
+  currentAccomNights =
+    parseFloat(localStorage.getItem("carbonAccomNights")) || 0;
+
+  // Restore input fields
+  if (currentTransportMethod) {
+    document.getElementById("transport-select").value = currentTransportMethod;
+    document.getElementById("distance").value = currentTransportDistance;
+    document.getElementById("passengers").value = currentTransportPassengers;
+    document.getElementById("result-display").innerHTML =
+      currentTransportEmissions.toFixed(2) + " kg CO₂";
+    document.getElementById("emission-result").style.display = "block";
+  }
+  if (currentAccomType) {
+    document.getElementById("accom-select").value = currentAccomType;
+    document.getElementById("nights").value = currentAccomNights;
+    document.getElementById("accom-result-display").innerHTML =
+      currentAccomEmissions.toFixed(2) + " kg CO₂";
+    document.getElementById("accom-result-box").style.display = "block";
+  }
+
+  // Re-render totals and alternatives
+  updateTotalImpact();
+  if (currentTransportMethod) generateTransportAlternatives();
+  if (currentAccomType) generateAccomAlternatives();
+}
+
+document.addEventListener("DOMContentLoaded", restoreState);
+
+function resetCalculator() {
+  // Clear all localStorage keys
+  [
+    "carbonTotal",
+    "carbonCredits",
+    "carbonTransportEmit",
+    "carbonAccomEmit",
+    "carbonTransportMethod",
+    "carbonTransportDist",
+    "carbonTransportPax",
+    "carbonAccomType",
+    "carbonAccomNights",
+  ].forEach((k) => localStorage.removeItem(k));
+
+  // Reset variables
+  currentTransportEmissions = 0;
+  currentAccomEmissions = 0;
+  currentTransportMethod = "";
+  currentTransportDistance = 0;
+  currentTransportPassengers = 1;
+  currentAccomType = "";
+  currentAccomNights = 0;
+
+  // Reset form inputs
+  document.getElementById("transport-select").value = "";
+  document.getElementById("distance").value = "";
+  document.getElementById("passengers").value = "1";
+  document.getElementById("accom-select").value = "";
+  document.getElementById("nights").value = "";
+
+  // Hide result panels
+  document.getElementById("emission-result").style.display = "none";
+  document.getElementById("accom-result-box").style.display = "none";
+  document.getElementById("impact-breakdown").style.display = "none";
+  document.getElementById("impact-badge").style.display = "none";
+  document.getElementById("offset-section").style.display = "none";
+  document.getElementById("alternatives-container").style.display = "none";
+  document.getElementById("accom-alternatives-container").style.display =
+    "none";
+
+  document.getElementById("total-result").textContent = "0.00";
 }

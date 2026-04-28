@@ -2,6 +2,11 @@ let currentView = "all";
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 favorites = favorites.map(String);
 
+function updateCounts() {
+  document.getElementById("allCount").textContent = places.length;
+  document.getElementById("favCount").textContent = favorites.length;
+}
+
 function renderPlaces(data) {
   const container = document.getElementById("placesContainer");
   container.innerHTML = "";
@@ -69,6 +74,7 @@ document.getElementById("placesContainer").addEventListener("click", function (e
   }
 
   localStorage.setItem("favorites", JSON.stringify(favorites));
+  updateCounts();
   applyFilters();
 });
 
@@ -142,4 +148,5 @@ clearFilter.addEventListener("click", () => {
   applyFilters();
 });
 
+updateCounts();
 applyFilters();

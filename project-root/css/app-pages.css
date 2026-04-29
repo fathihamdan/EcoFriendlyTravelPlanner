@@ -53,7 +53,7 @@
   border-radius: 2px;
 }
 
-.sidebar .nav-item, 
+.sidebar .nav-item,
 .sidebar .text-center {
   transition: all 0.3s ease;
   cursor: pointer;
@@ -62,16 +62,16 @@
 /*Bootstrap tooltip*/
 /* Styling the tooltip box to match your dark theme */
 .tooltip-inner {
-    background-color: #0b1f26 !important;
-    color: #fff !important;
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 8px 12px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 0.85rem;
+  background-color: #0b1f26 !important;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 12px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.85rem;
 }
 
 .tooltip .tooltip-arrow {
-    display: none !important;
+  display: none !important;
 }
 
 /* ===== MAIN CONTENT ===== */
@@ -983,4 +983,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 16px;
   min-width: 280px;
   height: fit-content;
+}
+#transport-select,
+#accom-select {
+  cursor: pointer;
 }

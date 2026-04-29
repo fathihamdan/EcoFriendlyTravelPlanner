@@ -169,7 +169,7 @@
                     <input
                       type="number"
                       class="form-control custom-input"
-                      value="1"
+                      placeholder="1"
                       id="passengers"
                       min="1"
                     />
@@ -387,9 +387,13 @@
     ></script>
     <script src="./js/carbon-calculator.js"></script>
     <script>
-        // Initialize all tooltips on the page
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+      // Initialize all tooltips on the page
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]',
+      );
+      const tooltipList = [...tooltipTriggerList].map(
+        (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl),
+      );
     </script>
   </body>
 </html>

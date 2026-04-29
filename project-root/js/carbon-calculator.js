@@ -52,6 +52,14 @@ document.getElementById("distance").addEventListener("input", function () {
 document.getElementById("passengers").addEventListener("input", function () {
   if (this.value < 1) this.value = 1;
 });
+
+document.getElementById("passengers").addEventListener("focus", function () {
+  if (this.value === "1") this.value = "";
+});
+
+document.getElementById("passengers").addEventListener("blur", function () {
+  if (this.value === "" || this.value < 1) this.value = 1;
+});
 document.getElementById("nights").addEventListener("input", function () {
   if (this.value < 1) this.value = 1;
 });

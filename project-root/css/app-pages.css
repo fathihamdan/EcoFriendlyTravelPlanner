@@ -59,6 +59,21 @@
   cursor: pointer;
 }
 
+/*Bootstrap tooltip*/
+/* Styling the tooltip box to match your dark theme */
+.tooltip-inner {
+    background-color: #0b1f26 !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+}
+
+.tooltip .tooltip-arrow {
+    display: none !important;
+}
+
 /* ===== MAIN CONTENT ===== */
 .main-content {
   color: white;

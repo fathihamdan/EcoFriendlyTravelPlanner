@@ -428,16 +428,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .activity-img {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 10px;
   object-fit: cover;
 }
 
-.tag {
-  background: #1e7e34;
-  color: #aef7c5;
+.tag2 {
+  background: rgba(76, 175, 80, 0.2);
+  border-color: #4caf50;
   padding: 3px 8px;
+  color: #88ff98;
   border-radius: 8px;
   font-size: 12px;
   width: fit-content;

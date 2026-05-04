@@ -45,7 +45,7 @@ const places = [
     image: "../assets/Accommodation/LeMeridian.png",
     co2: "12 kg CO₂ saved",
     type: "Accommodation",
-    description: "Nestled on a scenic hilltop, PULSE GRANDE Hotel is a serene retreat for solo travelers, offering panoramic views of Putrajaya, an elegant infinity pool, a rejuvenating spa and direct access to botanical gardens for relaxation and exploration.",
+    description: "Located in Putrajaya, Le Meridien Putrajaya offers accommodations in Kuala Lumpur. It is connected to the largest mall in Malaysia IOI City Mall, with addition of the entertainment space and family activities.",
     tags: ["Energy-Saving System", "Waste Reduction"]
   },
   {

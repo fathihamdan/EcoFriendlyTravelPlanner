@@ -4,6 +4,8 @@ const cors = require("cors");
 
 require("dotenv").config();
 
+const placeRoutes = require("./routes/placeRoutes");
+
 const app = express();
 
 app.use(cors());
@@ -16,6 +18,8 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => {
     console.log(err);
 });
+
+app.use("/api/places", placeRoutes);
 
 app.get("/", (req, res) => {
     res.send("Backend Running");

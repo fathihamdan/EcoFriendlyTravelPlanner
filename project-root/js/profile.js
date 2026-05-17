@@ -45,8 +45,6 @@ function loadProfileData() {
     }
 
     // ── Resolve first / last name ──────────────────────────────────────────
-    // Newer registrations store firstName / lastName directly.
-    // Older registrations may only have a combined `name` field.
     let firstName = user.firstName || '';
     let lastName  = user.lastName  || '';
 

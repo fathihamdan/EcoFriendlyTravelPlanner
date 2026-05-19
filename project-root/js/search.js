@@ -1,3 +1,4 @@
+let places = [];
 let currentView = "all";
 let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 favorites = favorites.map(String);
@@ -148,5 +149,17 @@ clearFilter.addEventListener("click", () => {
   applyFilters();
 });
 
-updateCounts();
-applyFilters();
+fetch("http://localhost:5000/api/places")
+  .then((response) => response.json())
+  .then((data) => {
+
+    places = data;
+
+    updateCounts();
+
+    applyFilters();
+
+  })
+  .catch((error) => {
+    console.log(error);
+  });

@@ -28,21 +28,21 @@ const accomFactors = {
 };
 
 const transportLabels = {
-  flight_economy: "✈️ Flight (Economy)",
-  flight_business: "✈️ Flight (Business)",
-  car_petrol: "🚗 Car (Petrol)",
-  car_electric: "🚗 Car (Electric)",
-  train: "🌐 Train",
-  bus: "🚌 Bus",
-  bike: "🚶 Bike/Walk",
+  flight_economy: " Flight (Economy)",
+  flight_business: " Flight (Business)",
+  car_petrol: " Car (Petrol)",
+  car_electric: " Car (Electric)",
+  train: " Train",
+  bus: " Bus",
+  bike: " Bike/Walk",
 };
 
 const accomLabels = {
-  hotel_standard: "🏨 Standard Hotel",
-  hotel_eco: "🏨 Eco-Certified Hotel",
-  hostel: "🛏️ Hostel",
-  eco_lodge: "🏕️ Eco-Lodge",
-  camping: "⛺ Camping",
+  hotel_standard: " Standard Hotel",
+  hotel_eco: " Eco-Certified Hotel",
+  hostel: " Hostel",
+  eco_lodge: " Eco-Lodge",
+  camping: " Camping",
 };
 
 // Input Validation

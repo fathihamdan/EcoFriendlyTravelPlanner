@@ -161,5 +161,7 @@ fetch("http://localhost:5000/api/places")
 
   })
   .catch((error) => {
-    console.log(error);
+    console.error("Could not load places:", error);
+    document.getElementById("placesContainer").innerHTML =
+      `<p class="text-white col-12">Could not connect to server. Make sure the backend is running on port 5000.</p>`;
   });

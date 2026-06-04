@@ -13,7 +13,11 @@ const userRoutes = require("./routes/userRoutes");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*",  // or "http://localhost:5000" if served from the same port
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json());
 
 // ── Serve frontend static files ──────────────────────────
@@ -27,7 +31,8 @@ mongoose.connect(process.env.MONGO_URI)
     console.log("MongoDB Connected");
 })
 .catch((err) => {
-    console.log(err);
+    console.error("MongoDB connection failed:", err.message);
+    process.exit(1);
 });
 
 app.get("/", (req, res) => {

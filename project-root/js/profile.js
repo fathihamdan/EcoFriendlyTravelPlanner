@@ -12,7 +12,7 @@ function clearSession() {
     localStorage.removeItem("ecoroam_user");
 }
 
-async function apiFetch(path, options = {}) {
+async function apiFetch(path, options = {}, skipAuthRedirect = false) {
     const token = getToken();
     const res = await fetch(`${API_BASE}${path}`, {
         ...options,
@@ -23,8 +23,7 @@ async function apiFetch(path, options = {}) {
         },
     });
 
-    if (res.status === 401) {
-        // Token expired or invalid — send back to login
+    if (res.status === 401 && !skipAuthRedirect) {
         clearSession();
         window.location.href = "login.html";
         return null;
@@ -177,37 +176,20 @@ async function changePassword() {
         await apiFetch("/users/change-password", {
             method: "PUT",
             body: JSON.stringify({ currentPassword, newPassword }),
-        });
+        }, true);  // <-- true = don't auto-logout on 401
 
         showToast("Password changed successfully!", "success");
         document.getElementById("currentPassword").value    = "";
         document.getElementById("newPassword").value        = "";
         document.getElementById("confirmNewPassword").value = "";
         closeModal("passwordModal");
+
     } catch (err) {
-        showToast(err.message || "Could not update password.", "error");
-    }
-}
-
-// ========== ACCOUNT ==========
-
-async function deactivateAccount() {
-    if (!confirm("Are you sure you want to deactivate your account? This cannot be undone.")) return;
-
-    const confirmText = prompt('Type "DEACTIVATE" to confirm:');
-    if (confirmText !== "DEACTIVATE") {
-        if (confirmText !== null) alert("Deactivation cancelled — incorrect confirmation text.");
-        return;
-    }
-
-    try {
-        await apiFetch("/users/profile", { method: "DELETE" });
-
-        clearSession();
-        showToast("Your account has been deactivated. We're sad to see you go!", "success");
-        setTimeout(() => { window.location.href = "login.html"; }, 1500);
-    } catch (err) {
-        showToast(err.message || "Could not deactivate account.", "error");
+        // Wrong current password (401) or any other error — just show the message
+        // Clear only the current password field so they can re-enter it
+        document.getElementById("currentPassword").value = "";
+        document.getElementById("currentPassword").focus();
+        showToast(err.message || "Current password is incorrect. Please try again.", "error");
     }
 }
 

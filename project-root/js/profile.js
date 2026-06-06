@@ -195,10 +195,30 @@ async function changePassword() {
 
 function logout() {
     if (!confirm("Are you sure you want to log out?")) return;
-
+    
     clearSession();
     showToast("Logged out successfully!", "success");
     setTimeout(() => { window.location.href = "login.html"; }, 600);
+}
+
+async function deactivateAccount() {
+    if (!confirm("Are you sure you want to deactivate your account? This cannot be undone.")) return;
+
+    const confirmText = prompt('Type "DEACTIVATE" to confirm:');
+    if (confirmText !== "DEACTIVATE") {
+        if (confirmText !== null) alert("Deactivation cancelled — incorrect confirmation text.");
+        return;
+    }
+
+    try {
+        await apiFetch("/users/profile", { method: "DELETE" });
+
+        clearSession();
+        showToast("Your account has been deactivated. We're sad to see you go!", "success");
+        setTimeout(() => { window.location.href = "login.html"; }, 1500);
+    } catch (err) {
+        showToast(err.message || "Could not deactivate account.", "error");
+    }
 }
 
 // ========== UI HELPERS ==========

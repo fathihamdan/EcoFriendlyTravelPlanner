@@ -8,6 +8,8 @@ const {
     updateUserProfile,
     changePassword,
     deactivateAccount,
+    getFavorites,
+    toggleFavorite,
 } = require("../controllers/userController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -21,5 +23,7 @@ router.get ("/profile",         protect, getUserProfile);
 router.put ("/profile",         protect, updateUserProfile);
 router.put ("/change-password", protect, changePassword);
 router.delete("/profile",       protect, deactivateAccount);
+router.get ("/favorites",        protect, getFavorites);
+router.post("/favorites/toggle", protect, toggleFavorite);
 
 module.exports = router;

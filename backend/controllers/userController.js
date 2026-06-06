@@ -142,6 +142,31 @@ const deactivateAccount = async (req, res) => {
     res.json({ message: "Account deactivated successfully" });
 };
 
+// ─── @route  GET /api/users/favorites  (protected) ───────────────────────────
+const getFavorites = async (req, res) => {
+    res.json({ favorites: req.user.favorites || [] });
+};
+
+// ─── @route  POST /api/users/favorites/toggle  (protected) ───────────────────
+const toggleFavorite = async (req, res) => {
+    const { placeId } = req.body;
+    if (!placeId) {
+        return res.status(400).json({ message: "placeId is required" });
+    }
+
+    const user = await User.findById(req.user._id);
+    const index = user.favorites.indexOf(placeId);
+
+    if (index === -1) {
+        user.favorites.push(placeId);
+    } else {
+        user.favorites.splice(index, 1);
+    }
+
+    await user.save();
+    res.json({ favorites: user.favorites });
+};
+
 module.exports = {
     registerUser,
     loginUser,
@@ -149,4 +174,6 @@ module.exports = {
     updateUserProfile,
     changePassword,
     deactivateAccount,
+    getFavorites,
+    toggleFavorite,
 };

@@ -15,13 +15,79 @@ const GenerateItineraryBtn = document.getElementById('btn-generate-itinerary');
 const ShowFormFirstBtn = document.getElementById('btn-show-form-first');
 
 // ── localStorage helpers ───────────────────────────────────────────────────
-
-function getStoredItineraries() {
-    return JSON.parse(localStorage.getItem('itineraries') || '[]');
+async function getPlaces() {
+    const res = await fetch("http://localhost:5000/api/places");
+    if (!res.ok) {
+        console.error("Failed to load places");
+        return [];
+    }
+    return await res.json();
 }
 
-function saveItinerariesToStorage(list) {
-    localStorage.setItem('itineraries', JSON.stringify(list));
+async function getStoredItineraries() {
+    try {
+        const res = await fetch("http://localhost:5000/api/itineraries", {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("ecoroam_token")
+            }
+        });
+
+        if (!res.ok) {
+            console.log("Auth failed:", res.status);
+            return [];
+        }
+
+        return await res.json();
+    } catch (err) {
+        console.error("Failed to fetch itineraries", err);
+        return [];
+    }
+}
+
+async function saveItinerary() {
+    const newTrip = {
+        title: document.getElementById('TripTitle').value,
+        destination: document.getElementById('destination').value,
+        startDate: document.getElementById('startDate').value,
+        endDate: document.getElementById('endDate').value,
+        budget: document.getElementById('budget').value,
+        weather: document.getElementById('weatherPreference').value,
+        interests: Array.from(
+            document.querySelectorAll('input[name="type"]:checked')
+        ).map(cb => cb.value),
+
+        co2: window.currentItineraryData?.totalCO2 || 0,
+        itineraryData: window.currentItineraryData || null
+    };
+    const token = localStorage.getItem("ecoroam_token");
+
+if (!token) {
+    alert("You are not logged in");
+    return;
+}
+
+    const res = await fetch("http://localhost:5000/api/itineraries", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify(newTrip)
+    });
+
+    if (!res.ok) {
+        alert("Save failed (maybe not logged in)");
+        return;
+    }
+    const data = await res.json();
+
+    alert("Itinerary saved!");
+
+    // return to main page
+    itineraryGenerateView.classList.add("d-none");
+    itineraryPageView.classList.remove("d-none");
+
+    renderItineraryCards();
 }
 
 function getBudgetCategory(budget) {
@@ -37,11 +103,15 @@ function getCO2Value(str) {
 
 // ── Render saved trips into the card grid ─────────────────────────────────
 
-function renderItineraryCards() {
-    const trips = getStoredItineraries();
+async function renderItineraryCards() {
+    const trips = await getStoredItineraries();
+
+    console.log("TRIPS:", trips); // 🔥 debug
+
     itineraryListCardContainer.innerHTML = '';
 
-    if (trips.length === 0) {
+    // IMPORTANT FIX
+    if (!Array.isArray(trips) || trips.length === 0) {
         itineraryFirstListCard.classList.remove('d-none');
         itineraryListCardContainer.classList.add('d-none');
         return;
@@ -53,25 +123,25 @@ function renderItineraryCards() {
     trips.forEach((trip, idx) => {
         const col = document.createElement('div');
         col.className = 'col-md-4';
+
         col.innerHTML = `
             <div class="card custom-card p-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="text-white mb-1">${trip.title || trip.destination}</h5>
                     <span class="co2-badge-list">🌿 ${trip.co2 || '0'} kg</span>
                 </div>
+
                 <div class="d-flex my-2 align-items-center gap-2">
                     <i class="bi bi-geo-alt"></i>
                     <p class="text-muted mb-0">${trip.destination}</p>
                 </div>
+
                 <div class="d-flex my-1 align-items-center gap-2">
                     <i class="bi bi-calendar4"></i>
                     <p class="text-muted mb-0">${trip.startDate} – ${trip.endDate}</p>
                 </div>
-                ${trip.interests && trip.interests.length > 0
-                ? trip.interests.map(i => `<span class="tag2 my-1">${i}</span>`).join('')
-                : ''
-            }                
-                    <div class="d-flex mt-3 gap-2">
+
+                <div class="d-flex mt-3 gap-2">
                     <button class="btn green-bright-btn flex-grow-1 btn-view" data-idx="${idx}">View</button>
                     <button class="btn btn-danger btn-delete" data-idx="${idx}">Delete</button>
                 </div>
@@ -100,8 +170,8 @@ function renderTimelineCard(item) {
     `;
 }
 
-function viewSavedItinerary(idx) { //retrieve data from storage to display itinerary saved
-    const trip = getStoredItineraries()[idx];
+async function viewSavedItinerary(idx) { //retrieve data from storage to display itinerary saved
+    const trip = await getStoredItineraries()[idx];
 
     const { accommodation, timeline } = trip.itineraryData;
 
@@ -155,25 +225,33 @@ function viewSavedItinerary(idx) { //retrieve data from storage to display itine
     GeneratedResultContainer.classList.add('d-none');
 }
 
-function deleteItinerary(idx) {
+async function deleteItinerary(idx) {
     if (!confirm('Delete this itinerary?')) return;
-    const trips = getStoredItineraries();
-    trips.splice(idx, 1);
-    saveItinerariesToStorage(trips);
+
+    const trips = await getStoredItineraries();
+    const trip = trips[idx];
+
+    await fetch(`http://localhost:5000/api/itineraries/${trip._id}`, {
+        method: "DELETE",
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("ecoroam_token")
+        }
+    });
+
     updateDashboardStats();
     renderItineraryCards();
 }
 
 // ── Update dashboard counters stored in localStorage ──────────────────────
 
-function updateDashboardStats() {
-    const trips = getStoredItineraries();
-    localStorage.setItem('itineraryCount', trips.length);
+async function updateDashboardStats() {
+    const trips = await getStoredItineraries();
+    localStorage.setItem("itineraryCount", trips.length);
 }
 
 // ── View transitions ───────────────────────────────────────────────────────
 
-function showItineraryResult() {
+async function showItineraryResult() {
     const destination = document.getElementById('destination').value;
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
@@ -194,6 +272,8 @@ function showItineraryResult() {
 
     const allowedBudgets = getAllowedBudgets(budgetCategory);
 
+    const places = await getPlaces();
+    
     // Filter by location + allowed budgets
     let filteredPlaces = places.filter(place =>
         place.location === destination &&
@@ -387,51 +467,6 @@ function getDays(startDate, endDate) {
     return days;
 }
 
-// ── Save itinerary → persist to localStorage ──────────────────────────────
-
-function saveItinerary() {
-    console.log("tak jadi save")
-    const destination = document.getElementById('destination').value;
-    const startDate = document.getElementById('startDate').value;
-    const endDate = document.getElementById('endDate').value;
-    const title = document.getElementById('TripTitle').value || destination;
-    const budget = document.getElementById('budget').value;
-    const weather = document.getElementById('weatherPreference').value;
-
-    const interests = Array.from(
-        document.querySelectorAll('input[name="type"]:checked')
-    ).map(cb => cb.value);
-
-    const newTrip = {
-        title,
-        destination,
-        startDate,
-        endDate,
-        budget,
-        weather,
-        interests,
-        co2: window.currentItineraryData?.totalCO2 || 0,
-        itineraryData: window.currentItineraryData || null,
-        savedAt: new Date().toISOString()
-    };
-
-    const trips = getStoredItineraries();
-    trips.push(newTrip);
-    saveItinerariesToStorage(trips);
-    updateDashboardStats();
-
-    alert('Itinerary saved successfully!');
-
-    itineraryFirstListCard.classList.add('d-none');
-    itineraryFormView.classList.add('d-none');
-    itineraryResultView.classList.add('d-none');
-    itineraryPageView.classList.remove('d-none');
-    itineraryGenerateView.classList.add('d-none')
-    renderItineraryCards();
-}
-
-
-
 // ── Event listeners ────────────────────────────────────────────────────────
 CreateItineraryBtn.addEventListener('click', showItineraryForm);
 ShowFormFirstBtn.addEventListener('click', showItineraryForm);
@@ -449,11 +484,10 @@ document.addEventListener('click', function (e) {
         deleteItinerary(idx);
     }
     if (e.target.classList.contains('btn-save-itinerary')) {
-        const idx = e.target.dataset.idx;
-        saveItinerary(idx);
-    }
+    saveItinerary();
+}
 
 });
 
 // ── Init ───────────────────────────────────────────────────────────────────
-renderItineraryCards();
+renderItineraryCards().catch(console.error);

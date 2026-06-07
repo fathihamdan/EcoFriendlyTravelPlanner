@@ -12,6 +12,7 @@ const placeRoutes = require("./routes/placeRoutes");
 const userRoutes = require("./routes/userRoutes");
 const carbonRoutes = require("./routes/carbonRoutes");
 
+const itineraryRoutes = require("./routes/itineraryRoutes");
 const app = express();
 
 app.use(
@@ -29,6 +30,7 @@ app.use("/assets", express.static(path.join(__dirname, "../assets")));
 app.use("/api/users", userRoutes);
 app.use("/api/places", placeRoutes);
 app.use("/api/carbon", carbonRoutes);
+app.use("/api/itineraries", itineraryRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

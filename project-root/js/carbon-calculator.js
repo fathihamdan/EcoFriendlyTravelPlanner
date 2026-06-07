@@ -1,14 +1,13 @@
-// Global State for totals
+// ── Global State ─────────────────────────────────────────
 let currentTransportEmissions = 0;
 let currentAccomEmissions = 0;
-
 let currentTransportDistance = 0;
 let currentTransportMethod = "";
 let currentTransportPassengers = 1;
-
 let currentAccomType = "";
 let currentAccomNights = 0;
 
+// ── Constants ─────────────────────────────────────────────
 const emissionFactors = {
   flight_economy: 0.255,
   flight_business: 0.434,
@@ -28,51 +27,137 @@ const accomFactors = {
 };
 
 const transportLabels = {
-  flight_economy: " Flight (Economy)",
-  flight_business: " Flight (Business)",
-  car_petrol: " Car (Petrol)",
-  car_electric: " Car (Electric)",
-  train: " Train",
-  bus: " Bus",
-  bike: " Bike/Walk",
+  flight_economy: "✈ Flight (Economy)",
+  flight_business: "✈ Flight (Business)",
+  car_petrol: "🚗 Car (Petrol)",
+  car_electric: "⚡ Car (Electric)",
+  train: "🚆 Train",
+  bus: "🚌 Bus",
+  bike: "🚲 Bike/Walk",
 };
 
 const accomLabels = {
-  hotel_standard: " Standard Hotel",
-  hotel_eco: " Eco-Certified Hotel",
-  hostel: " Hostel",
-  eco_lodge: " Eco-Lodge",
-  camping: " Camping",
+  hotel_standard: "🏨 Standard Hotel",
+  hotel_eco: "🌿 Eco-Certified Hotel",
+  hostel: "🛏 Hostel",
+  eco_lodge: "🌲 Eco-Lodge",
+  camping: "⛺ Camping",
 };
 
-// Input Validation
+// ── Toast Notification ────────────────────────────────────
+function showToast(message, type = "success") {
+  const wrap = document.getElementById("toast-wrap");
+  if (!wrap) return;
+
+  const styles = {
+    success: {
+      bg: "#d1fae5",
+      border: "#6ee7b7",
+      color: "#065f46",
+      icon: "bi-check-circle-fill",
+    },
+    danger: {
+      bg: "#fee2e2",
+      border: "#fca5a5",
+      color: "#991b1b",
+      icon: "bi-exclamation-circle-fill",
+    },
+    info: {
+      bg: "#e0f2fe",
+      border: "#7dd3fc",
+      color: "#075985",
+      icon: "bi-info-circle-fill",
+    },
+  };
+  const s = styles[type] || styles.info;
+
+  const t = document.createElement("div");
+  t.style.cssText = `
+    display:flex; align-items:center; gap:10px;
+    padding:12px 16px; border-radius:10px;
+    border:1px solid ${s.border}; background:${s.bg}; color:${s.color};
+    font-size:14px; font-weight:500; pointer-events:all;
+    min-width:220px; max-width:340px;
+    animation:ccSlideIn .22s ease;
+  `;
+  t.innerHTML = `
+    <i class="bi ${s.icon}" style="font-size:16px;flex-shrink:0;"></i>
+    <span>${message}</span>
+    <button onclick="this.parentElement.remove()" aria-label="Close"
+      style="margin-left:auto;background:none;border:none;color:inherit;
+             cursor:pointer;font-size:18px;padding:0;line-height:1;opacity:.7;">&times;</button>
+  `;
+
+  wrap.appendChild(t);
+  setTimeout(() => {
+    t.style.animation = "ccSlideOut .22s ease forwards";
+    setTimeout(() => t.remove(), 220);
+  }, 3500);
+}
+
+// ── Input Validation (live) ───────────────────────────────
 document.getElementById("distance").addEventListener("input", function () {
   if (this.value < 0) this.value = 0;
+  clearFieldError("distance", "distance-error");
 });
+
+document
+  .getElementById("transport-select")
+  .addEventListener("change", function () {
+    clearFieldError("transport-select", "transport-error");
+  });
+
 document.getElementById("passengers").addEventListener("input", function () {
   if (this.value < 1) this.value = 1;
 });
-
 document.getElementById("passengers").addEventListener("focus", function () {
   if (this.value === "1") this.value = "";
 });
-
 document.getElementById("passengers").addEventListener("blur", function () {
   if (this.value === "" || this.value < 1) this.value = 1;
 });
+
 document.getElementById("nights").addEventListener("input", function () {
   if (this.value < 1) this.value = 1;
+  clearFieldError("nights", "nights-error");
+});
+document.getElementById("accom-select").addEventListener("change", function () {
+  clearFieldError("accom-select", "accom-error");
 });
 
-// UI Tab Switcher
+// ── Field Error Helpers ───────────────────────────────────
+function showFieldError(inputId, errorId, message) {
+  const input = document.getElementById(inputId);
+  const errorEl = document.getElementById(errorId);
+  if (input) {
+    input.style.borderColor = "#f87171";
+    input.style.boxShadow = "0 0 0 3px rgba(248,113,113,0.2)";
+  }
+  if (errorEl) {
+    errorEl.textContent = message;
+    errorEl.style.display = "flex";
+  }
+}
+
+function clearFieldError(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const errorEl = document.getElementById(errorId);
+  if (input) {
+    input.style.borderColor = "";
+    input.style.boxShadow = "";
+  }
+  if (errorEl) {
+    errorEl.style.display = "none";
+  }
+}
+
+// ── Tab Switcher ──────────────────────────────────────────
 function switchTab(tab, btnElement) {
-  // Toggle Buttons
   document
     .querySelectorAll(".tab-btn")
     .forEach((b) => b.classList.remove("active"));
   btnElement.classList.add("active");
 
-  // Toggle Sections
   if (tab === "transport") {
     document.getElementById("transport-section").style.display = "block";
     document.getElementById("accommodation-section").style.display = "none";
@@ -82,114 +167,180 @@ function switchTab(tab, btnElement) {
   }
 }
 
+// ── Impact Level ──────────────────────────────────────────
 function getImpactLevel(kg) {
   if (kg === 0)
-    return {
-      label: "✓ Zero Emission",
-      color: "#d1fae5",
-      text: "#065f46",
-    };
+    return { label: "✓ Zero Emission", color: "#d1fae5", text: "#065f46" };
   if (kg <= 50)
     return { label: "✓ Low Impact", color: "#d1fae5", text: "#065f46" };
   if (kg <= 200)
-    return {
-      label: "⚠️ Medium Impact",
-      color: "#fef3c7",
-      text: "#92400e",
-    };
+    return { label: "⚠️ Medium Impact", color: "#fef3c7", text: "#92400e" };
   return { label: "🔴 High Impact", color: "#fee2e2", text: "#991b1b" };
 }
 
+// ── Calculate Transport ───────────────────────────────────
 function calculateTransport() {
   const method = document.getElementById("transport-select").value;
   const distance = parseFloat(document.getElementById("distance").value) || 0;
   const passengers =
     parseFloat(document.getElementById("passengers").value) || 1;
 
-  if (!method || distance === 0) return;
+  let hasError = false;
+  if (!method) {
+    showFieldError(
+      "transport-select",
+      "transport-error",
+      "Please select a transport method.",
+    );
+    hasError = true;
+  } else {
+    clearFieldError("transport-select", "transport-error");
+  }
+  if (distance <= 0) {
+    showFieldError(
+      "distance",
+      "distance-error",
+      "Please enter a distance greater than 0.",
+    );
+    hasError = true;
+  } else {
+    clearFieldError("distance", "distance-error");
+  }
+  if (hasError) {
+    showToast("Please fix the errors above.", "danger");
+    return;
+  }
 
   const factor = emissionFactors[method] || 0;
   currentTransportEmissions = (distance * factor) / passengers;
-
-  // Save state for alternative generation
   currentTransportMethod = method;
   currentTransportDistance = distance;
   currentTransportPassengers = passengers;
 
-  // Update transport local UI
-  document.getElementById("result-display").innerHTML =
-    currentTransportEmissions.toFixed(2) + " kg CO₂";
-  document.getElementById("emission-result").style.display = "block";
-
+  updateTransportResultUI();
   updateTotalImpact();
   generateTransportAlternatives();
 }
 
+function updateTransportResultUI() {
+  const total = currentTransportEmissions + currentAccomEmissions;
+  const impact = getImpactLevel(currentTransportEmissions);
+
+  document.getElementById("result-display").textContent =
+    currentTransportEmissions.toFixed(2);
+
+  const tPct =
+    total > 0 ? Math.round((currentTransportEmissions / total) * 100) : 100;
+  const barFill = document.getElementById("result-bar-fill");
+  if (barFill) barFill.style.width = tPct + "%";
+
+  const badge = document.getElementById("result-impact-badge");
+  if (badge) {
+    badge.textContent = impact.label;
+    badge.style.background = impact.color;
+    badge.style.color = impact.text;
+  }
+
+  document.getElementById("emission-result").style.display = "block";
+}
+
+// ── Calculate Accommodation ───────────────────────────────
 function calculateAccommodation() {
   const type = document.getElementById("accom-select").value;
   const nights = parseFloat(document.getElementById("nights").value) || 0;
 
-  if (!type || nights === 0) return;
+  let hasError = false;
+  if (!type) {
+    showFieldError(
+      "accom-select",
+      "accom-error",
+      "Please select an accommodation type.",
+    );
+    hasError = true;
+  } else {
+    clearFieldError("accom-select", "accom-error");
+  }
+  if (nights <= 0) {
+    showFieldError("nights", "nights-error", "Please enter at least 1 night.");
+    hasError = true;
+  } else {
+    clearFieldError("nights", "nights-error");
+  }
+  if (hasError) {
+    showToast("Please fix the errors above.", "danger");
+    return;
+  }
 
   const factor = accomFactors[type] || 0;
   currentAccomEmissions = factor * nights;
-
-  // Save state for alternative generation
   currentAccomType = type;
   currentAccomNights = nights;
 
-  // Update accommodation local UI
-  document.getElementById("accom-result-display").innerHTML =
-    currentAccomEmissions.toFixed(2) + " kg CO₂";
+  document.getElementById("accom-result-display").textContent =
+    currentAccomEmissions.toFixed(2);
   document.getElementById("accom-result-box").style.display = "block";
 
   updateTotalImpact();
   generateAccomAlternatives();
 }
 
+// ── Update Total Impact Card ──────────────────────────────
 function updateTotalImpact() {
   const total = currentTransportEmissions + currentAccomEmissions;
-
-  // Always update the total number
   document.getElementById("total-result").textContent = total.toFixed(2);
 
-  // Only display impact breakdowns and offset suggestions if a calculation has been made (total > 0)
   if (total > 0) {
-    // Breakdown Updates
     document.getElementById("transport-kg").textContent =
       currentTransportEmissions.toFixed(1) + " kg";
     document.getElementById("accom-kg").textContent =
       currentAccomEmissions.toFixed(1) + " kg";
     document.getElementById("impact-breakdown").style.display = "block";
 
-    // Impact Badge
-    const impact = getImpactLevel(total);
+    // Impact badge on sidebar card
     const badge = document.getElementById("impact-badge");
-    badge.style.display = "inline-block";
-    badge.style.backgroundColor = impact.color;
+    badge.style.display = "block";
 
+    // Percentage breakdown
+    const tPct = Math.round((currentTransportEmissions / total) * 100);
+    const aPct = Math.round((currentAccomEmissions / total) * 100);
+    const tPctEl = document.getElementById("transport-pct");
+    const aPctEl = document.getElementById("accom-pct");
+    if (tPctEl) tPctEl.textContent = `(${tPct}%)`;
+    if (aPctEl) aPctEl.textContent = `(${aPct}%)`;
+
+    // Colour bar
+    const barT = document.getElementById("bar-transport");
+    const barA = document.getElementById("bar-accom");
+    if (barT) barT.style.width = tPct + "%";
+    if (barA) barA.style.width = aPct + "%";
+
+    // Impact pill colour
     const impactLabel = document.getElementById("impact-label");
-    impactLabel.style.color = impact.text;
-    impactLabel.textContent = impact.label;
+    if (total <= 50) {
+      impactLabel.style.cssText =
+        "display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500;background:#E1F5EE;color:#085041;border:1px solid #5DCAA5;";
+      impactLabel.innerHTML =
+        '<i class="bi bi-check-circle me-1"></i> Low Impact';
+    } else if (total <= 200) {
+      impactLabel.style.cssText =
+        "display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500;background:#FAEEDA;color:#633806;border:1px solid #EF9F27;";
+      impactLabel.innerHTML =
+        '<i class="bi bi-exclamation-triangle me-1"></i> Medium Impact';
+    } else {
+      impactLabel.style.cssText =
+        "display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:500;background:#FCEBEB;color:#501313;border:1px solid #991b1b;";
+      impactLabel.innerHTML = '<i class="bi bi-x-circle me-1"></i> High Impact';
+    }
 
-    // Offset Icon match
-    const icon = badge.querySelector("i");
-    icon.className =
-      total <= 50
-        ? "bi bi-check-circle me-1"
-        : total <= 200
-          ? "bi bi-exclamation-triangle me-1"
-          : "bi bi-x-circle me-1";
-    icon.style.color = impact.text;
-
-    // General Offsets
     document.getElementById("offset-section").style.display = "block";
     document.getElementById("trees-count").textContent = Math.ceil(total / 21);
     document.getElementById("solar-count").textContent = Math.ceil(total / 1.5);
     const creditsCost = (total * 0.02).toFixed(2);
     document.getElementById("credits-cost").textContent = "$" + creditsCost;
 
-    // ── Persist full state to localStorage ──
+    const saveBtn = document.getElementById("save-result-btn");
+    if (saveBtn) saveBtn.style.display = "block";
+
     localStorage.setItem("carbonTotal", total.toFixed(2));
     localStorage.setItem("carbonCredits", creditsCost);
     localStorage.setItem(
@@ -203,91 +354,249 @@ function updateTotalImpact() {
     localStorage.setItem("carbonAccomType", currentAccomType);
     localStorage.setItem("carbonAccomNights", currentAccomNights);
   } else {
-    // Keep secondary cards hidden if there are no emissions calculated yet
     document.getElementById("impact-breakdown").style.display = "none";
     document.getElementById("impact-badge").style.display = "none";
     document.getElementById("offset-section").style.display = "none";
+    const saveBtn = document.getElementById("save-result-btn");
+    if (saveBtn) saveBtn.style.display = "none";
   }
 }
 
+// ── Transport Alternatives ────────────────────────────────
 function generateTransportAlternatives() {
   if (currentTransportEmissions === 0) return;
 
   const altContainer = document.getElementById("alternatives-container");
   const altList = document.getElementById("alternatives-list");
   altList.innerHTML = "";
-
   let foundGreener = false;
 
   Object.entries(emissionFactors).forEach(([key, f]) => {
     if (key === currentTransportMethod) return;
-
     const altEmission =
       (currentTransportDistance * f) / currentTransportPassengers;
     const saving = currentTransportEmissions - altEmission;
-
     if (saving <= 0) return;
-    foundGreener = true;
 
+    foundGreener = true;
     const col = document.createElement("div");
     col.className = "col-lg-4 col-md-6";
     col.innerHTML = `
-            <div class="p-3 rounded d-flex justify-content-between align-items-center h-100" style="background:#1e2f3d;">
-              <div>
-                <p class="text-white mb-0 small fw-bold">${transportLabels[key]}</p>
-                <p class="text-muted mb-0" style="font-size:0.75rem;">${altEmission.toFixed(2)} kg CO₂</p>
-              </div>
-              <span class="badge" style="background:#166534; color:#bbf7d0;">
-                -${saving.toFixed(2)} kg
-              </span>
-            </div>`;
+      <div class="p-3 rounded d-flex justify-content-between align-items-center h-100" style="background:#1e2f3d;">
+        <div>
+          <p class="text-white mb-0 small fw-bold">${transportLabels[key]}</p>
+          <p class="text-muted mb-0" style="font-size:0.75rem;">${altEmission.toFixed(2)} kg CO₂</p>
+        </div>
+        <span class="badge" style="background:#166534; color:#bbf7d0;">-${saving.toFixed(2)} kg</span>
+      </div>`;
     altList.appendChild(col);
   });
 
   altContainer.style.display = foundGreener ? "block" : "none";
 }
 
+// ── Accommodation Alternatives ────────────────────────────
 function generateAccomAlternatives() {
   if (currentAccomEmissions === 0) return;
 
   const altContainer = document.getElementById("accom-alternatives-container");
   const altList = document.getElementById("accom-alternatives-list");
   altList.innerHTML = "";
-
   let foundGreener = false;
 
   Object.entries(accomFactors).forEach(([key, f]) => {
     if (key === currentAccomType) return;
-
     const altEmission = f * currentAccomNights;
     const saving = currentAccomEmissions - altEmission;
-
     if (saving <= 0) return;
-    foundGreener = true;
 
+    foundGreener = true;
     const col = document.createElement("div");
     col.className = "col-lg-4 col-md-6";
     col.innerHTML = `
-            <div class="p-3 rounded d-flex justify-content-between align-items-center h-100" style="background:#1e2f3d;">
-              <div>
-                <p class="text-white mb-0 small fw-bold">${accomLabels[key]}</p>
-                <p class="text-muted mb-0" style="font-size:0.75rem;">${altEmission.toFixed(2)} kg CO₂</p>
-              </div>
-              <span class="badge" style="background:#8A2BE2; color:#f8f0ff;">
-                -${saving.toFixed(2)} kg
-              </span>
-            </div>`;
+      <div class="p-3 rounded d-flex justify-content-between align-items-center h-100" style="background:#1e2f3d;">
+        <div>
+          <p class="text-white mb-0 small fw-bold">${accomLabels[key]}</p>
+          <p class="text-muted mb-0" style="font-size:0.75rem;">${altEmission.toFixed(2)} kg CO₂</p>
+        </div>
+        <span class="badge" style="background:#8A2BE2; color:#f8f0ff;">-${saving.toFixed(2)} kg</span>
+      </div>`;
     altList.appendChild(col);
   });
 
   altContainer.style.display = foundGreener ? "block" : "none";
 }
 
+// ── Save Result to MongoDB ────────────────────────────────
+async function saveResult() {
+  const token = localStorage.getItem("ecoroam_token");
+  if (!token) {
+    showToast("You must be logged in to save results.", "danger");
+    return;
+  }
+
+  const total = currentTransportEmissions + currentAccomEmissions;
+  if (total <= 0) {
+    showToast("Nothing to save yet.", "danger");
+    return;
+  }
+
+  const impact = getImpactLevel(total);
+  const payload = {
+    transportMethod: currentTransportMethod,
+    transportDistance: currentTransportDistance,
+    transportPassengers: currentTransportPassengers,
+    transportEmissions: currentTransportEmissions,
+    accomType: currentAccomType,
+    accomNights: currentAccomNights,
+    accomEmissions: currentAccomEmissions,
+    totalEmissions: total,
+    impactLevel: impact.label,
+  };
+
+  const btn = document.getElementById("save-result-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Saving...';
+
+  try {
+    const res = await fetch("/api/carbon/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      showToast(data.message || "Failed to save.", "danger");
+    } else {
+      showToast("Result saved successfully!", "success");
+      loadHistory();
+    }
+  } catch (err) {
+    console.error("saveResult error:", err);
+    showToast("Network error. Could not save.", "danger");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="bi bi-cloud-check me-2"></i> Save Result';
+  }
+}
+
+// ── Load History from MongoDB ─────────────────────────────
+async function loadHistory() {
+  const token = localStorage.getItem("ecoroam_token");
+  if (!token) return;
+
+  const historySection = document.getElementById("history-section");
+  const historyList = document.getElementById("history-list");
+  if (!historySection || !historyList) return;
+
+  historyList.innerHTML = `<p class="text-muted">Loading history...</p>`;
+  historySection.style.display = "block";
+
+  try {
+    const res = await fetch("/api/carbon/history", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+
+    if (!res.ok || !data.data || data.data.length === 0) {
+      historyList.innerHTML = `<p class="text-muted">No saved calculations yet.</p>`;
+      return;
+    }
+
+    historyList.innerHTML = "";
+
+    data.data.forEach((record) => {
+      const date = new Date(record.createdAt).toLocaleDateString("en-MY", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      });
+      const impact = getImpactLevel(record.totalEmissions);
+
+      const card = document.createElement("div");
+      card.className = "col-12 col-md-6 col-xl-4";
+      card.innerHTML = `
+        <div class="p-3 h-100" style="background:#1e2f3d; border:1px solid rgba(255,255,255,0.1); border-radius:12px;">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="small text-muted">${date}</span>
+            <span class="badge rounded-pill" style="background:${impact.color}; color:${impact.text}; font-size:0.7rem;">
+              ${record.impactLevel}
+            </span>
+          </div>
+          <h4 class="text-white fw-bold mb-0">
+            ${record.totalEmissions.toFixed(2)}
+            <span style="font-size:14px; font-weight:400; opacity:.6;"> kg CO₂</span>
+          </h4>
+          <hr style="border-color:rgba(255,255,255,0.1);" />
+          <div class="small text-muted">
+            ${
+              record.transportMethod
+                ? `<div class="d-flex justify-content-between">
+                   <span>${transportLabels[record.transportMethod] || record.transportMethod}</span>
+                   <strong class="text-white">${record.transportEmissions.toFixed(1)} kg</strong>
+                 </div>`
+                : ""
+            }
+            ${
+              record.accomType
+                ? `<div class="d-flex justify-content-between mt-1">
+                   <span>${accomLabels[record.accomType] || record.accomType}</span>
+                   <strong class="text-white">${record.accomEmissions.toFixed(1)} kg</strong>
+                 </div>`
+                : ""
+            }
+          </div>
+          <button class="btn btn-sm btn-outline-danger mt-3 w-100"
+            onclick="deleteRecord('${record._id}', this)">
+            <i class="bi bi-trash me-1"></i> Delete
+          </button>
+        </div>`;
+      historyList.appendChild(card);
+    });
+  } catch (err) {
+    console.error("loadHistory error:", err);
+    historyList.innerHTML = `<p class="text-danger">Failed to load history.</p>`;
+  }
+}
+
+// ── Delete a History Record ───────────────────────────────
+async function deleteRecord(id, btnEl) {
+  const token = localStorage.getItem("ecoroam_token");
+  if (!token) return;
+
+  btnEl.disabled = true;
+
+  try {
+    const res = await fetch(`/api/carbon/history/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      showToast(data.message || "Delete failed.", "danger");
+      btnEl.disabled = false;
+    } else {
+      showToast("Record deleted.", "info");
+      loadHistory();
+    }
+  } catch (err) {
+    console.error("deleteRecord error:", err);
+    showToast("Network error. Could not delete.", "danger");
+    btnEl.disabled = false;
+  }
+}
+
+// ── Restore State from localStorage ──────────────────────
 function restoreState() {
   const total = localStorage.getItem("carbonTotal");
-  if (!total) return; // nothing saved yet
+  if (!total) return;
 
-  // Restore variables
   currentTransportEmissions =
     parseFloat(localStorage.getItem("carbonTransportEmit")) || 0;
   currentAccomEmissions =
@@ -301,33 +610,29 @@ function restoreState() {
   currentAccomNights =
     parseFloat(localStorage.getItem("carbonAccomNights")) || 0;
 
-  // Restore input fields
   if (currentTransportMethod) {
     document.getElementById("transport-select").value = currentTransportMethod;
     document.getElementById("distance").value = currentTransportDistance;
     document.getElementById("passengers").value = currentTransportPassengers;
-    document.getElementById("result-display").innerHTML =
-      currentTransportEmissions.toFixed(2) + " kg CO₂";
+    document.getElementById("result-display").textContent =
+      currentTransportEmissions.toFixed(2);
     document.getElementById("emission-result").style.display = "block";
   }
   if (currentAccomType) {
     document.getElementById("accom-select").value = currentAccomType;
     document.getElementById("nights").value = currentAccomNights;
-    document.getElementById("accom-result-display").innerHTML =
-      currentAccomEmissions.toFixed(2) + " kg CO₂";
+    document.getElementById("accom-result-display").textContent =
+      currentAccomEmissions.toFixed(2);
     document.getElementById("accom-result-box").style.display = "block";
   }
 
-  // Re-render totals and alternatives
   updateTotalImpact();
   if (currentTransportMethod) generateTransportAlternatives();
   if (currentAccomType) generateAccomAlternatives();
 }
 
-document.addEventListener("DOMContentLoaded", restoreState);
-
+// ── Reset Calculator ──────────────────────────────────────
 function resetCalculator() {
-  // Clear all localStorage keys
   [
     "carbonTotal",
     "carbonCredits",
@@ -340,7 +645,6 @@ function resetCalculator() {
     "carbonAccomNights",
   ].forEach((k) => localStorage.removeItem(k));
 
-  // Reset variables
   currentTransportEmissions = 0;
   currentAccomEmissions = 0;
   currentTransportMethod = "";
@@ -349,14 +653,12 @@ function resetCalculator() {
   currentAccomType = "";
   currentAccomNights = 0;
 
-  // Reset form inputs
   document.getElementById("transport-select").value = "";
   document.getElementById("distance").value = "";
   document.getElementById("passengers").value = "1";
   document.getElementById("accom-select").value = "";
   document.getElementById("nights").value = "";
 
-  // Hide result panels
   document.getElementById("emission-result").style.display = "none";
   document.getElementById("accom-result-box").style.display = "none";
   document.getElementById("impact-breakdown").style.display = "none";
@@ -365,6 +667,30 @@ function resetCalculator() {
   document.getElementById("alternatives-container").style.display = "none";
   document.getElementById("accom-alternatives-container").style.display =
     "none";
-
   document.getElementById("total-result").textContent = "0.00";
+
+  const saveBtn = document.getElementById("save-result-btn");
+  if (saveBtn) saveBtn.style.display = "none";
+
+  ["transport-select", "distance", "accom-select", "nights"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.borderColor = "";
+      el.style.boxShadow = "";
+    }
+  });
+  ["transport-error", "distance-error", "accom-error", "nights-error"].forEach(
+    (id) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = "none";
+    },
+  );
+
+  showToast("Calculator has been reset.", "info");
 }
+
+// ── On Page Load ──────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  restoreState();
+  loadHistory();
+});

@@ -15,6 +15,14 @@ const GenerateItineraryBtn = document.getElementById('btn-generate-itinerary');
 const ShowFormFirstBtn = document.getElementById('btn-show-form-first');
 
 // ── localStorage helpers ───────────────────────────────────────────────────
+async function getPlaces() {
+    const res = await fetch("http://localhost:5000/api/places");
+    if (!res.ok) {
+        console.error("Failed to load places");
+        return [];
+    }
+    return await res.json();
+}
 
 async function getStoredItineraries() {
     try {
@@ -162,8 +170,8 @@ function renderTimelineCard(item) {
     `;
 }
 
-function viewSavedItinerary(idx) { //retrieve data from storage to display itinerary saved
-    const trip = getStoredItineraries()[idx];
+async function viewSavedItinerary(idx) { //retrieve data from storage to display itinerary saved
+    const trip = await getStoredItineraries()[idx];
 
     const { accommodation, timeline } = trip.itineraryData;
 
@@ -236,15 +244,14 @@ async function deleteItinerary(idx) {
 
 // ── Update dashboard counters stored in localStorage ──────────────────────
 
-function updateDashboardStats() {
-    getStoredItineraries().then(trips => {
-        localStorage.setItem("itineraryCount", trips.length);
-    });
+async function updateDashboardStats() {
+    const trips = await getStoredItineraries();
+    localStorage.setItem("itineraryCount", trips.length);
 }
 
 // ── View transitions ───────────────────────────────────────────────────────
 
-function showItineraryResult() {
+async function showItineraryResult() {
     const destination = document.getElementById('destination').value;
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
@@ -265,6 +272,8 @@ function showItineraryResult() {
 
     const allowedBudgets = getAllowedBudgets(budgetCategory);
 
+    const places = await getPlaces();
+    
     // Filter by location + allowed budgets
     let filteredPlaces = places.filter(place =>
         place.location === destination &&

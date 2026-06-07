@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const placeRoutes = require("./routes/placeRoutes");
 const userRoutes = require("./routes/userRoutes");
-
+const itineraryRoutes = require("./routes/itineraryRoutes");
 const app = express();
 
 app.use(cors({
@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, '../project-root')));
 app.use('/assets', express.static(path.join(__dirname, '../assets')));
 app.use("/api/users", userRoutes);
 app.use("/api/places", placeRoutes);
+app.use("/api/itineraries", itineraryRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
 .then(() => {

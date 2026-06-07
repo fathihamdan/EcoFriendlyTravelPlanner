@@ -18,9 +18,49 @@
 
     <link rel="stylesheet" href="./css/global.css" />
     <link rel="stylesheet" href="./css/app-pages.css" />
+
+    <style>
+      @keyframes ccSlideIn {
+        from {
+          opacity: 0;
+          transform: translateX(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes ccSlideOut {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateX(12px);
+        }
+      }
+    </style>
   </head>
   <body>
+    <!-- Toast container -->
+    <div
+      id="toast-wrap"
+      style="
+        position: fixed;
+        top: 1.25rem;
+        right: 1.25rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      "
+      aria-live="polite"
+    ></div>
+
     <div class="d-flex">
+      <!-- Sidebar -->
       <div class="sidebar d-flex flex-column justify-content-between">
         <div>
           <div class="logo mb-4 text-center">
@@ -28,7 +68,6 @@
               <img src="../assets/EcoRoam-logo.png" class="logo-img" />
             </a>
           </div>
-
           <ul class="nav flex-column text-center">
             <li class="nav-item mb-4">
               <a
@@ -37,8 +76,8 @@
                 data-bs-placement="right"
                 title="Dashboard"
               >
-                <i class="bi bi-grid"></i
-              ></a>
+                <i class="bi bi-grid"></i>
+              </a>
             </li>
             <li class="nav-item mb-4">
               <a
@@ -47,8 +86,8 @@
                 data-bs-placement="right"
                 title="EcoSearch"
               >
-                <i class="bi bi-search"></i
-              ></a>
+                <i class="bi bi-search"></i>
+              </a>
             </li>
             <li class="nav-item mb-4">
               <a
@@ -57,8 +96,8 @@
                 data-bs-placement="right"
                 title="Itinerary"
               >
-                <i class="bi bi-calendar"></i
-              ></a>
+                <i class="bi bi-calendar"></i>
+              </a>
             </li>
             <li class="nav-item mb-4">
               <a
@@ -67,8 +106,8 @@
                 data-bs-placement="right"
                 title="Weather"
               >
-                <i class="bi bi-cloud"></i
-              ></a>
+                <i class="bi bi-cloud"></i>
+              </a>
             </li>
             <li class="nav-item mb-4 active">
               <a
@@ -77,12 +116,11 @@
                 data-bs-placement="right"
                 title="Carbon Calculator"
               >
-                <i class="bi bi-calculator"></i
-              ></a>
+                <i class="bi bi-calculator"></i>
+              </a>
             </li>
           </ul>
         </div>
-
         <div class="text-center mb-3">
           <a
             href="profile.html"
@@ -90,11 +128,12 @@
             data-bs-placement="right"
             title="Profile"
           >
-            <i class="bi bi-person-circle"></i
-          ></a>
+            <i class="bi bi-person-circle"></i>
+          </a>
         </div>
       </div>
 
+      <!-- Main Content -->
       <div
         class="main-content flex-grow-1 p-4"
         style="min-width: 0; overflow-x: hidden"
@@ -105,6 +144,7 @@
         </p>
 
         <div class="row g-4 align-items-start mb-4">
+          <!-- ── Left column: calculator card ── -->
           <div class="col-12 col-xl-8">
             <div class="d-flex custom-tab mb-3 w-100">
               <button
@@ -122,6 +162,7 @@
             </div>
 
             <div class="card custom-card p-4 w-100">
+              <!-- Transport section -->
               <div id="transport-section">
                 <h5 class="text-white fw-bold">
                   Transportation Carbon Calculator
@@ -132,7 +173,7 @@
 
                 <label class="text-white mb-1">Transportation Method</label>
                 <select
-                  class="form-select custom-input mb-3"
+                  class="form-select custom-input mb-1"
                   id="transport-select"
                 >
                   <option value="">Select transportation</option>
@@ -152,8 +193,17 @@
                   <option value="bus">Bus (0.089 kg CO₂/km)</option>
                   <option value="bike">Bike/Walk (0 kg CO₂/km)</option>
                 </select>
+                <div
+                  id="transport-error"
+                  style="
+                    display: none;
+                    color: #f87171;
+                    font-size: 12px;
+                    margin-bottom: 8px;
+                  "
+                ></div>
 
-                <div class="row mb-3">
+                <div class="row mb-3 mt-2">
                   <div class="col-md-6 mb-3 mb-md-0">
                     <label class="text-white mb-1">Distance (km)</label>
                     <input
@@ -163,6 +213,15 @@
                       id="distance"
                       min="0"
                     />
+                    <div
+                      id="distance-error"
+                      style="
+                        display: none;
+                        color: #f87171;
+                        font-size: 12px;
+                        margin-top: 4px;
+                      "
+                    ></div>
                   </div>
                   <div class="col-md-6">
                     <label class="text-white mb-1">Passengers</label>
@@ -187,20 +246,28 @@
                 <div
                   id="emission-result"
                   class="mt-3 p-3 rounded"
-                  style="background: #f0f8ff; display: none"
+                  style="
+                    background: #1e2f3d;
+                    border: 1px solid rgba(56, 138, 221, 0.3);
+                    display: none;
+                  "
                 >
-                  <p class="mb-1" style="color: #1a1a2e">
-                    Transportation Emissions:
+                  <p class="mb-1 small" style="color: rgba(255, 255, 255, 0.5)">
+                    Transportation Emissions
                   </p>
                   <h4
-                    style="color: #0d6efd; margin: 0; font-weight: bold"
+                    style="color: #378add; margin: 0; font-weight: 600"
                     id="result-display"
                   >
-                    0.00 kg CO₂
+                    0.00
                   </h4>
+                  <span style="color: rgba(255, 255, 255, 0.5); font-size: 13px"
+                    >kg CO₂</span
+                  >
                 </div>
               </div>
 
+              <!-- Accommodation section -->
               <div id="accommodation-section" style="display: none">
                 <h5 class="text-white fw-bold">
                   Accommodation Carbon Calculator
@@ -210,7 +277,7 @@
                 </p>
 
                 <label class="text-white mb-1">Accommodation Type</label>
-                <select class="form-select custom-input mb-3" id="accom-select">
+                <select class="form-select custom-input mb-1" id="accom-select">
                   <option value="">Select accommodation</option>
                   <option value="hotel_standard">
                     Standard Hotel (20 kg CO₂/night)
@@ -222,18 +289,36 @@
                   <option value="eco_lodge">Eco-Lodge (3 kg CO₂/night)</option>
                   <option value="camping">Camping (0.5 kg CO₂/night)</option>
                 </select>
+                <div
+                  id="accom-error"
+                  style="
+                    display: none;
+                    color: #f87171;
+                    font-size: 12px;
+                    margin-bottom: 8px;
+                  "
+                ></div>
 
-                <label class="text-white mb-1">Number of Nights</label>
+                <label class="text-white mb-1 mt-2">Number of Nights</label>
                 <input
                   type="number"
-                  class="form-control custom-input mb-3"
+                  class="form-control custom-input mb-1"
                   placeholder="e.g., 3"
                   id="nights"
                   min="1"
                 />
+                <div
+                  id="nights-error"
+                  style="
+                    display: none;
+                    color: #f87171;
+                    font-size: 12px;
+                    margin-bottom: 8px;
+                  "
+                ></div>
 
                 <button
-                  class="btn w-100 fw-bold text-white"
+                  class="btn w-100 fw-bold text-white mt-2"
                   style="background-color: #8a2be2"
                   onclick="calculateAccommodation()"
                 >
@@ -244,20 +329,28 @@
                 <div
                   id="accom-result-box"
                   class="mt-3 p-3 rounded"
-                  style="background: #f8f0ff; display: none"
+                  style="
+                    background: #1e2f3d;
+                    border: 1px solid #8a2be2;
+                    display: none;
+                  "
                 >
-                  <p class="mb-1" style="color: #1a1a2e">
-                    Accommodation Emissions:
+                  <p class="mb-1 small" style="color: rgba(255, 255, 255, 0.5)">
+                    Accommodation Emissions
                   </p>
                   <h4
-                    style="color: #8a2be2; margin: 0; font-weight: bold"
+                    style="color: #8a2be2; margin: 0; font-weight: 600"
                     id="accom-result-display"
                   >
-                    0.00 kg CO₂
+                    0.00
                   </h4>
+                  <span style="color: rgba(255, 255, 255, 0.5); font-size: 13px"
+                    >kg CO₂</span
+                  >
                 </div>
               </div>
 
+              <!-- Reset + Save buttons -->
               <div class="mt-4 pt-3 border-top border-light border-opacity-25">
                 <button
                   class="btn btn-outline-danger w-100 fw-bold"
@@ -266,44 +359,165 @@
                   <i class="bi bi-arrow-counterclockwise me-1"></i> Reset
                   Calculator
                 </button>
+                <button
+                  id="save-result-btn"
+                  class="btn btn-success w-100 fw-bold mt-2"
+                  style="display: none"
+                  onclick="saveResult()"
+                >
+                  <i class="bi bi-cloud-check me-2"></i> Save Result
+                </button>
               </div>
             </div>
           </div>
-          <div class="col-12 col-xl-4">
-            <div class="impact-card p-4 w-100 h-100">
-              <h6 class="text-white fw-bold mb-3">
-                <i class="bi bi-graph-down me-2"></i> Total Impact
-              </h6>
-              <p class="text-white-30 mb-1">Total Carbon Emissions</p>
-              <h1 class="text-white fw-bold mb-0" id="total-result">0.00</h1>
-              <p class="text-white">kg CO<sub>2</sub></p>
 
-              <div
-                id="impact-badge"
-                class="mt-3 p-2 rounded text-center"
-                style="display: none; background-color: #d1fae5"
-              >
-                <i class="bi bi-exclamation-circle text-success me-1"></i>
-                <span id="impact-label" class="fw-bold text-success"
-                  >✓ Low Impact</span
-                >
+          <!-- ── Right column: Total Impact card ── -->
+          <div class="col-12 col-xl-4">
+            <div
+              class="impact-card p-0 w-100 h-100"
+              style="border-radius: 14px; overflow: hidden"
+            >
+              <!-- Colour bar -->
+              <div style="height: 6px; display: flex">
+                <div
+                  id="bar-transport"
+                  style="
+                    background: #378add;
+                    width: 100%;
+                    transition: width 0.5s ease;
+                  "
+                ></div>
+                <div
+                  id="bar-accom"
+                  style="
+                    background: #8a2be5;
+                    width: 0%;
+                    transition: width 0.5s ease;
+                  "
+                ></div>
               </div>
 
-              <div id="impact-breakdown" style="display: none" class="mt-4">
-                <div
-                  class="d-flex justify-content-between text-white border-bottom border-light border-opacity-25 pb-2 mb-2"
+              <!-- Total number -->
+              <div style="padding: 1.25rem 1.25rem 1rem">
+                <p
+                  style="
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: rgb(255, 255, 255);
+                    text-transform: uppercase;
+                    letter-spacing: 0.07em;
+                    margin-bottom: 0.5rem;
+                  "
                 >
-                  <span>Transport:</span>
-                  <strong id="transport-kg">0.0 kg</strong>
+                  Total Carbon Emissions
+                </p>
+                <div style="display: flex; align-items: baseline; gap: 8px">
+                  <h1
+                    class="fw-bold text-white mb-0"
+                    id="total-result"
+                    style="font-size: 40px; line-height: 1"
+                  >
+                    0.00
+                  </h1>
+                  <span style="font-size: 14px; color: rgb(255, 255, 255)"
+                    >kg CO₂</span
+                  >
                 </div>
-                <div class="d-flex justify-content-between text-white">
-                  <span>Accommodation:</span>
-                  <strong id="accom-kg">0.0 kg</strong>
+
+                <!-- Impact pill -->
+                <div id="impact-badge" class="mt-3" style="display: none">
+                  <span
+                    id="impact-label"
+                    style="
+                      display: inline-flex;
+                      align-items: center;
+                      gap: 6px;
+                      padding: 5px 12px;
+                      border-radius: 999px;
+                      font-size: 13px;
+                      font-weight: 500;
+                    "
+                  >
+                    <i class="bi bi-check-circle"></i> Low Impact
+                  </span>
+                </div>
+              </div>
+
+              <!-- Breakdown rows -->
+              <div
+                id="impact-breakdown"
+                style="
+                  display: none;
+                  border-top: 1px solid rgba(255, 255, 255, 0.1);
+                  padding: 1rem 1.25rem;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  <div
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background: #378add;
+                      flex-shrink: 0;
+                    "
+                  ></div>
+                  <span
+                    style="font-size: 13px; color: rgb(255, 255, 255); flex: 1"
+                    >Transport</span
+                  >
+                  <strong
+                    id="transport-kg"
+                    class="text-white"
+                    style="font-size: 13px"
+                    >0.0 kg</strong
+                  >
+                  <span
+                    id="transport-pct"
+                    style="font-size: 12px; color: rgb(255, 255, 255)"
+                    >(0%)</span
+                  >
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <div
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background: #8a2be2;
+                      flex-shrink: 0;
+                    "
+                  ></div>
+                  <span
+                    style="font-size: 13px; color: rgb(255, 255, 255); flex: 1"
+                    >Accommodation</span
+                  >
+                  <strong
+                    id="accom-kg"
+                    class="text-white"
+                    style="font-size: 13px"
+                    >0.0 kg</strong
+                  >
+                  <span
+                    id="accom-pct"
+                    style="font-size: 12px; color: rgb(255, 255, 255)"
+                    >(0%)</span
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- end row -->
+
+        <!-- Offset Suggestions -->
         <div
           id="offset-section"
           class="card custom-card p-4"
@@ -375,8 +589,21 @@
             <div id="accom-alternatives-list" class="row g-3"></div>
           </div>
         </div>
+
+        <!-- History section -->
+        <div
+          id="history-section"
+          class="card custom-card p-4 mt-4"
+          style="display: none"
+        >
+          <h5 style="color: #2ecc71">📋 Your Saved Calculations</h5>
+          <p class="text-muted mb-3">Your previous carbon footprint results</p>
+          <div id="history-list" class="row g-3"></div>
+        </div>
       </div>
+      <!-- end main-content -->
     </div>
+    <!-- end d-flex -->
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
@@ -385,12 +612,11 @@
     ></script>
     <script src="./js/carbon-calculator.js"></script>
     <script>
-      // Initialize all tooltips on the page
       const tooltipTriggerList = document.querySelectorAll(
         '[data-bs-toggle="tooltip"]',
       );
       const tooltipList = [...tooltipTriggerList].map(
-        (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl),
+        (el) => new bootstrap.Tooltip(el),
       );
     </script>
   </body>

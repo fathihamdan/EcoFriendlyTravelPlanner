@@ -42,7 +42,7 @@ MONGO_URI=your_MongoDB_URI
 PORT=5000
 JWT_SECRET=your_jwt_secret_key
 JWT_EXPIRES_IN=7d
-WEATHER_API_KEY=your_WeatherAPI.com_key
+WEATHERAPI_KEY=your_WeatherAPI.com_key
 ```
 > ⚠️ The `.env` file is intentionally excluded from GitHub via `.gitignore` to protect sensitive credentials. You must create this file manually every time you clone the project.
 

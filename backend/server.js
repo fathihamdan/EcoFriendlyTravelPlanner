@@ -32,6 +32,40 @@ app.use("/api/places", placeRoutes);
 app.use("/api/carbon", carbonRoutes);
 app.use("/api/itineraries", itineraryRoutes);
 
+ 
+// ── Weather proxy (hides API key from frontend) ───────────
+app.get("/api/weather/current", async (req, res) => {
+  const { city } = req.query;
+  if (!city) return res.status(400).json({ error: "City is required" });
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+    );
+    const data = await response.json();
+    if (!response.ok) return res.status(response.status).json(data);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch weather data" });
+  }
+});
+
+app.get("/api/weather/forecast", async (req, res) => {
+  const { city } = req.query;
+  if (!city) return res.status(400).json({ error: "City is required" });
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+    );
+    const data = await response.json();
+    if (!response.ok) return res.status(response.status).json(data);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch forecast data" });
+  }
+});
+
+
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

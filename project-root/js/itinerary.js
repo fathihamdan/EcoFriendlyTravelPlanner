@@ -249,6 +249,72 @@ async function updateDashboardStats() {
     localStorage.setItem("itineraryCount", trips.length);
 }
 
+// ── Weather helper (WeatherAPI) ────────────────────────────────────────────
+
+async function fetchExtendedForecast(city, startDate, endDate) {
+    try {
+        const res = await fetch(
+            `http://localhost:5000/api/weather/extended?city=${encodeURIComponent(city)}&start_date=${startDate}&end_date=${endDate}`
+        );
+        if (!res.ok) return null;
+        return await res.json();
+    } catch {
+        return null;
+    }
+}
+
+// Build a lookup map from WeatherAPI response: { "2026-06-10": forecastday object }
+function buildForecastMap(data) {
+    if (!data || !data.forecast) return {};
+    const map = {};
+    data.forecast.forEach(day => {
+        map[day.date] = day;
+    });
+    return map;
+}
+
+function weatherEmoji(conditionText) {
+    if (!conditionText) return '🌡️';
+    const t = conditionText.toLowerCase();
+    if (t.includes('thunder') || t.includes('storm'))        return '⛈️';
+    if (t.includes('drizzle') || t.includes('mist'))         return '🌦️';
+    if (t.includes('rain') || t.includes('shower'))          return '🌧️';
+    if (t.includes('snow') || t.includes('blizzard'))        return '❄️';
+    if (t.includes('fog') || t.includes('overcast'))         return '🌫️';
+    if (t.includes('sunny') || t.includes('clear'))          return '☀️';
+    if (t.includes('partly cloudy'))                         return '⛅';
+    if (t.includes('cloud'))                                 return '☁️';
+    return '🌡️';
+}
+
+function renderWeatherBadge(dayData) {
+    if (!dayData) return `<div class="weather-day-badge text-muted" style="font-size:0.8rem;">🌡️ Weather unavailable</div>`;
+
+    const day   = dayData.day;
+    const desc  = day.condition.text;
+    const emoji = weatherEmoji(desc);
+    const high  = Math.round(day.maxtemp_c);
+    const low   = Math.round(day.mintemp_c);
+    const humid = day.avghumidity;
+    const wind  = Math.round(day.maxwind_kph);
+    const rain  = day.daily_chance_of_rain;
+
+    return `
+    <div class="weather-day-badge d-flex align-items-center gap-3 flex-wrap px-3 py-2 rounded-3 mb-2"
+         style="background:rgba(76,175,80,0.10); border:1px solid rgba(76,175,80,0.25);">
+        <span style="font-size:1.6rem;">${emoji}</span>
+        <div>
+            <div style="color:#fff; font-weight:600; font-size:0.9rem; text-transform:capitalize;">${desc}</div>
+            <div style="color:#9fb3c8; font-size:0.78rem;">
+                H:${high}° L:${low}°
+                &nbsp;·&nbsp; 💧${humid}%
+                &nbsp;·&nbsp; 💨${wind} km/h
+                &nbsp;·&nbsp; 🌧️${rain}% rain
+            </div>
+        </div>
+    </div>`;
+}
+
 // ── View transitions ───────────────────────────────────────────────────────
 
 async function showItineraryResult() {
@@ -347,6 +413,10 @@ if (filteredActivities.length === 0) {
 
     const totalDays = getDays(startDate, endDate);
 
+    // Fetch extended forecast (Open-Meteo, up to 16 days) for the chosen destination
+    const forecastData = await fetchExtendedForecast(destination, startDate, endDate);
+    const forecastMap  = buildForecastMap(forecastData);
+
     let timelineHTML = `
 <div class="card activity-card my-2 p-2">
     <p class="fw-bold text-white px-2">Accommodation</p>
@@ -382,12 +452,19 @@ if (filteredActivities.length === 0) {
             restaurant: restaurant
         });
 
+        // Get weather for this specific day from the map
+        const yyyy = currentDate.getFullYear();
+        const mm   = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const dd   = String(currentDate.getDate()).padStart(2, '0');
+        const dayForecast = forecastMap[`${yyyy}-${mm}-${dd}`] || null;
+
         timelineHTML += `
     <div class="timeline">
         <div class="timeline-marker">${i + 1}</div>
         <div class="timeline-item">
             <div class="timeline-content p-2">
                 <h6 class="text-white">Day ${i + 1} - ${currentDate.toDateString()}</h6>
+                ${renderWeatherBadge(dayForecast)}
                 ${renderTimelineCard(activity)}
                 ${renderTimelineCard(restaurant)}
             </div>

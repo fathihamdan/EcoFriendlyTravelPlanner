@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const dns = require("node:dns/promises");
-// Set Cloudflare's DNS server (1.1.1.1) as the resolver
-dns.setServers(["1.1.1.1"]);
+dns.setServers(["1.1.1.1"]);// Set Cloudflare's DNS server (1.1.1.1) as the resolver
 
 require("dotenv").config();
 
@@ -32,13 +31,24 @@ app.use("/api/places", placeRoutes);
 app.use("/api/carbon", carbonRoutes);
 app.use("/api/itineraries", itineraryRoutes);
 
-// ── Weather proxy (hides API key from frontend) ───────────
+// ── City name mapping (dropdown value → WeatherAPI-recognised name) ────────
+const CITY_MAP = {
+  "putrajaya":        "Wilayah Persekutuan Putrajaya",
+  "bandaraya melaka": "Melaka",
+  "kuala terengganu": "Kuala Terengganu, Terengganu",
+  "langkawi":         "Langkawi, Kedah",
+};
+
+// ── Current + 14-day forecast (WeatherAPI — used by weather.html) ─────────
 app.get("/api/weather/current", async (req, res) => {
   const { city } = req.query;
   if (!city) return res.status(400).json({ error: "City is required" });
+ 
+  const mappedCity = CITY_MAP[city.toLowerCase()] || city;
+ 
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
+      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${encodeURIComponent(mappedCity)}&days=7&aqi=yes&alerts=no`
     );
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json(data);
@@ -48,48 +58,21 @@ app.get("/api/weather/current", async (req, res) => {
   }
 });
 
-// ── 5-day forecast (OpenWeather — used by weather.html) ───────────────────
-app.get("/api/weather/forecast", async (req, res) => {
-  const { city } = req.query;
-  if (!city) return res.status(400).json({ error: "City is required" });
-  try {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${process.env.WEATHER_API_KEY}&units=metric`
-    );
-    const data = await response.json();
-    if (!response.ok) return res.status(response.status).json(data);
-    res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch forecast data" });
-  }
-});
-
-// ── City name mapping (dropdown value → WeatherAPI-recognised name) ────────
-const CITY_MAP = {
-  "putrajaya":        "Wilayah Persekutuan Putrajaya",
-  "bandaraya melaka": "Melaka",
-  "kuala terengganu": "Kuala Terengganu, Terengganu",
-  "langkawi":         "Langkawi, Kedah",
-};
-
 // ── Extended forecast (WeatherAPI — used by itinerary.html, up to 14 days) ──
 app.get("/api/weather/extended", async (req, res) => {
   const { city, start_date, end_date } = req.query;
   if (!city || !start_date || !end_date)
     return res.status(400).json({ error: "city, start_date and end_date are required" });
  
-  // Map to WeatherAPI-recognised name, fallback to original if not in map
   const mappedCity = CITY_MAP[city.toLowerCase()] || city;
  
   try {
-    // WeatherAPI forecast endpoint (up to 14 days)
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${encodeURIComponent(mappedCity)}&days=14&aqi=no&alerts=no`
     );
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json(data);
  
-    // Filter only the days within the requested date range
     const filtered = data.forecast.forecastday.filter(day =>
       day.date >= start_date && day.date <= end_date
     );
@@ -99,8 +82,6 @@ app.get("/api/weather/extended", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch extended forecast" });
   }
 });
-
-
 
 mongoose
   .connect(process.env.MONGO_URI)

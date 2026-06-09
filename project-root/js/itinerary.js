@@ -210,13 +210,26 @@ async function viewSavedItinerary(idx) {
         ${renderTimelineCard(accommodation)}
         </div>`;
 
+    // Re-fetch forecast for the saved trip's date range
+        const forecastData = await fetchExtendedForecast(trip.destination, trip.startDate, trip.endDate);
+    const forecastMap  = buildForecastMap(forecastData);
+
     timeline.forEach(day => {
+        // Parse the saved date string back to YYYY-MM-DD key
+        const dateObj  = new Date(day.date);
+        const yyyy     = dateObj.getFullYear();
+        const mm       = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const dd       = String(dateObj.getDate()).padStart(2, '0');
+        const dateKey  = `${yyyy}-${mm}-${dd}`;
+        const dayForecast = forecastMap[dateKey] || null;
+
         timelineHTML += `
     <div class="timeline">
         <div class="timeline-marker">${day.day}</div>
         <div class="timeline-item">
             <div class="timeline-content p-2">
                 <h6 class="text-white">Day ${day.day} - ${day.date}</h6>
+                ${renderWeatherBadge(dayForecast)}
                 ${renderTimelineCard(day.activity)}
                 ${renderTimelineCard(day.restaurant)}
             </div>

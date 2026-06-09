@@ -48,7 +48,7 @@ app.get("/api/weather/current", async (req, res) => {
  
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${encodeURIComponent(mappedCity)}&days=7&aqi=yes&alerts=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${encodeURIComponent(mappedCity)}&days=5&aqi=yes&alerts=no`
     );
     const data = await response.json();
     if (!response.ok) return res.status(response.status).json(data);

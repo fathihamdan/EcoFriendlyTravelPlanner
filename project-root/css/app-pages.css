@@ -427,6 +427,22 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: 10px;
 }
 
+.activity-card-clickable{
+  background: rgba(30, 50, 60, 0.9);
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+.activity-card-clickable:hover {
+  background: rgba(30, 50, 60, 0.9);
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 10px;
+  border: 1px solid #4caf50;
+  cursor: pointer;
+}
+
+
 .activity-img {
   width: 100px;
   height: 100px;
@@ -644,6 +660,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   transition: all 0.3s ease;
 }
 
+
 .btn-outline-action:hover {
   border-color: #4caf50;
   color: #4caf50;
@@ -666,6 +683,16 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background: rgba(220, 53, 69, 0.12);
   border-color: #dc3545;
   transform: translateY(-1px);
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .btn-logout {

@@ -14,9 +14,13 @@ const itinerarySchema = new mongoose.Schema({
     weather: String,
     interests: [String],
     co2: Number,
+
     itineraryData: {
     accommodation: Object,
-    timeline: Array},
+    timeline: Array,
+    totalCO2: Number,
+    weatherForecast: Object
+        },
     savedAt: {
         type: Date,
         default: Date.now

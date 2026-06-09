@@ -202,7 +202,7 @@
     "co2": "10 kg CO₂ saved",
     "type": "Restaurant",
     "description": "A plant-based cafe promoting holistic living with organic meals and beverages.",
-    "tags": ["Organic Ingredients", "Plant-based", "Sustainable Sourcing"]
+    "tags": ["foodie"]
   },
   {
     "id": "res2",
@@ -214,7 +214,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Healthy fast-casual restaurant offering customizable salads and poke bowls.",
-    "tags": ["Local Sourcing", "Healthy Food", "Low Processing"]
+    "tags": ["foodie"]
   },
   {
     "id": "res3",
@@ -226,7 +226,7 @@
     "co2": "8 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Upscale Chinese dining with focus on seasonal and mindful ingredients.",
-    "tags": ["Seasonal Ingredients", "Local Sourcing"]
+    "tags": ["foodie"]
   },
   {
     "id": "res4",
@@ -238,7 +238,7 @@
     "co2": "8 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Traditional Malay cuisine using locally sourced ingredients.",
-    "tags": ["Local Ingredients", "Support Local Farming"]
+    "tags": ["foodie", "culture"]
   },
   {
     "id": "res5",
@@ -250,7 +250,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Artisanal bakery known for organic ingredients and small-batch baking.",
-    "tags": ["Organic Ingredients", "Artisanal Production"]
+    "tags": ["foodie"]
   },
   {
     "id": "res6",
@@ -262,7 +262,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Health-focused eatery promoting balanced nutrition and clean eating.",
-    "tags": ["Healthy Eating", "Low Processing", "Sustainable Diet"]
+    "tags": ["foodie"]
   },
   {
     "id": "res7",
@@ -274,7 +274,7 @@
     "co2": "8 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Meat-free restaurant offering local-inspired plant-based dishes.",
-    "tags": ["Plant-based", "Low Carbon Diet"]
+    "tags": ["foodie"]
   },
   {
     "id": "res8",
@@ -286,7 +286,7 @@
     "co2": "7 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Affordable vegetarian restaurant with simple, traditional dishes.",
-    "tags": ["Vegetarian", "Low Impact", "Simple Cooking"]
+    "tags": ["foodie"]
   },
   {
     "id": "res9",
@@ -298,7 +298,7 @@
     "co2": "7 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Beachside eatery offering fresh local seafood in a traditional setting.",
-    "tags": ["Local Sourcing", "Low Processing"]
+    "tags": ["foodie", "culture"]
   },
   {
     "id": "res10",
@@ -310,7 +310,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Modern vegetarian cafe with diverse plant-based menu.",
-    "tags": ["Plant-based", "Organic Options"]
+    "tags": ["foodie"]
   },
   {
     "id": "res11",
@@ -322,7 +322,7 @@
     "co2": "10 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Botanical-themed vegetarian dining with eco-conscious concept.",
-    "tags": ["Plant-based", "Eco Awareness"]
+    "tags": ["foodie"]
   },
   {
     "id": "res12",
@@ -334,7 +334,7 @@
     "co2": "7 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Cozy vegetarian cafe offering simple healthy meals.",
-    "tags": ["Vegetarian", "Low Impact"]
+    "tags": ["foodie"]
   },
   {
     "id": "res13",
@@ -346,7 +346,7 @@
     "co2": "8 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Authentic local cuisine with strong cultural heritage.",
-    "tags": ["Local Ingredients", "Heritage Preservation"]
+    "tags": ["foodie", "culture"]
   },
   {
     "id": "res14",
@@ -358,7 +358,7 @@
     "co2": "8 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Heritage cafe known for local fusion dishes and rustic setting.",
-    "tags": ["Adaptive Reuse", "Local Ingredients"]
+    "tags": ["foodie", "culture"]
   },
   {
     "id": "res15",
@@ -370,7 +370,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Eco-conscious cafe focusing on organic and vegetarian meals.",
-    "tags": ["Organic Food", "Plant-based"]
+    "tags": ["foodie"]
   },
   {
     "id": "res16",
@@ -382,7 +382,7 @@
     "co2": "10 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Rainforest vegan dining with local-inspired plant-based dishes.",
-    "tags": ["Vegan", "Local Ingredients"]
+    "tags": ["foodie"]
   },
   {
     "id": "res17",
@@ -394,7 +394,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Vibrant vegan cafe offering healthy plant-based meals.",
-    "tags": ["Vegan", "Healthy Food"]
+    "tags": ["foodie"]
   },
   {
     "id": "res18",
@@ -406,7 +406,7 @@
     "co2": "11 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Fine dining experience using locally sourced sustainable ingredients.",
-    "tags": ["Farm-to-table", "Local Sourcing"]
+    "tags": ["foodie"]
   },
   {
     "id": "res19",
@@ -418,7 +418,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Restaurant",
     "description": "Traditional Malaysian seafood restaurant with local sourcing.",
-    "tags": ["Local Seafood", "Support Local"]
+    "tags": ["foodie"]
   },
  
   {
@@ -431,7 +431,7 @@
     "co2": "6 kg CO₂ saved",
     "type": "Activity",
     "description": "Large freshwater wetlands with bird watching and ecological learning.",
-    "tags": ["Conservation", "Wildlife Protection", "Low Impact"]
+    "tags": ["nature", "relaxation"]
   },
   {
     "id": "act2",
@@ -443,7 +443,7 @@
     "co2": "7 kg CO₂ saved",
     "type": "Activity",
     "description": "Electric boat cruise offering scenic and eco-friendly sightseeing.",
-    "tags": ["Electric Boats", "Zero Emissions"]
+    "tags": ["nature", "relaxation"]
   },
   {
     "id": "act3",
@@ -455,7 +455,7 @@
     "co2": "5 kg CO₂ saved",
     "type": "Activity",
     "description": "Botanical garden with cycling and plant exploration areas.",
-    "tags": ["Conservation", "Cycling", "No Vehicles"]
+    "tags": ["nature", "relaxation"]
   },
   {
     "id": "act4",
@@ -467,7 +467,7 @@
     "co2": "6 kg CO₂ saved",
     "type": "Activity",
     "description": "Adventure park with BMX and rock climbing activities.",
-    "tags": ["Non-motorized", "Low Impact"]
+    "tags": ["adventure"]
   },
   {
     "id": "act5",
@@ -479,7 +479,7 @@
     "co2": "10 kg CO₂ saved",
     "type": "Activity",
     "description": "Snorkeling and turtle conservation experience with protected habitats.",
-    "tags": ["Wildlife Conservation", "Guided Tours", "Low Impact"]
+    "tags": ["nature", "adventure"]
   },
   {
     "id": "act6",
@@ -491,7 +491,7 @@
     "co2": "7 kg CO₂ saved",
     "type": "Activity",
     "description": "Cultural river cruise showcasing traditional villages and heritage.",
-    "tags": ["Cultural", "Low Impact"]
+    "tags": ["Culture", "relaxation"]
   },
   {
     "id": "act7",
@@ -503,7 +503,7 @@
     "co2": "10 kg CO₂ saved",
     "type": "Activity",
     "description": "Mangrove kayaking and wildlife exploration experience.",
-    "tags": ["Conservation", "Kayaking", "Low Impact"]
+    "tags": [ "relaxation", "nature"]
   },
   {
     "id": "act8",
@@ -515,7 +515,7 @@
     "co2": "6 kg CO₂ saved",
     "type": "Activity",
     "description": "Large museum showcasing cultural heritage and artifacts.",
-    "tags": ["Cultural Preservation", "Low Impact"]
+    "tags": ["culture"]
   },
   {
     "id": "act9",
@@ -527,7 +527,7 @@
     "co2": "7 kg CO₂ saved",
     "type": "Activity",
     "description": "River cruise passing murals and heritage sites.",
-    "tags": ["Cultural", "Low Impact"]
+    "tags": ["culture", "relaxation"]
   },
   {
     "id": "act10",
@@ -539,7 +539,7 @@
     "co2": "8 kg CO₂ saved",
     "type": "Activity",
     "description": "Walk-in aviary with diverse bird species and conservation focus.",
-    "tags": ["Wildlife Conservation", "Low Impact"]
+    "tags": ["nature"]
   },
   {
     "id": "act11",
@@ -551,7 +551,7 @@
     "co2": "10 kg CO₂ saved",
     "type": "Activity",
     "description": "Firefly watching experience in mangrove forests.",
-    "tags": ["Conservation", "Eco Tourism"]
+    "tags": ["nature", "adventure"]
   },
   {
     "id": "act12",
@@ -563,7 +563,7 @@
     "co2": "5 kg CO₂ saved",
     "type": "Activity",
     "description": "Walking tour through Melaka’s historical landmarks.",
-    "tags": ["Walking", "Heritage Preservation"]
+    "tags": ["culture"]
   },
   {
     "id": "act13",
@@ -575,7 +575,7 @@
     "co2": "11 kg CO₂ saved",
     "type": "Activity",
     "description": "Boat safari through mangroves and limestone formations.",
-    "tags": ["Geopark", "Conservation"]
+    "tags": ["nature", "adventure"]
   },
   {
     "id": "act14",
@@ -587,7 +587,7 @@
     "co2": "9 kg CO₂ saved",
     "type": "Activity",
     "description": "Cable car and bridge offering panoramic rainforest views.",
-    "tags": ["Eco Tourism", "Low Impact"]
+    "tags": ["adventure", "nature"]
   },
   {
     "id": "act16",
@@ -599,7 +599,7 @@
     "co2": "5 kg CO₂ saved",
     "type": "Activity",
     "description": "Nature walk along unique black sand beach.",
-    "tags": ["Nature", "Low Impact"]
+    "tags": ["nature", "relaxation"]
   },
   {
     "id": "act17",
@@ -611,6 +611,6 @@
     "co2": "8 kg CO₂ saved",
     "type": "Activity",
     "description": "Interactive wildlife park with conservation programs.",
-    "tags": ["Animal Conservation", "Education"]
+    "tags": ["nature"]
   }
 ]

@@ -7,8 +7,7 @@
   <title>Itinerary EcoRoam Planner</title>
 
   <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
   <!-- Bootstrap Icons-->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <!-- Custom CSS -->
@@ -102,8 +101,7 @@
             </div>
             <span class="tag my-1">Nature</span>
             <div class="d-flex mt-3 gap-2">
-              <button class="btn green-bright-btn flex-grow-1" id="btn-view">View</button>
-              <button class="btn btn-danger">Delete</button>
+              <button class="btn green-bright-btn flex-grow-1 btn-view" data-id="trip1">View</button>
             </div>
           </div>
         </div>
@@ -176,23 +174,15 @@
               <div class="mb-3">
                 <label for="activityType" class="form-label text-white">Interests Preference * (Select at least
                   one)</label><br>
-                <label class="option-card">
-                  <input type="checkbox" name="type" value="nature">
-                  <span>Nature</span>
-                </label>
 
-                <label class="option-card">
-                  <input type="checkbox" name="type" value="food">
-                  <span>Food</span>
-                </label>
-                <label class="option-card">
-                  <input type="checkbox" name="type" value="culture">
-                  <span>Culture</span>
-                </label>
-                <label class="option-card">
-                  <input type="checkbox" name="type" value="adventure">
-                  <span>Adventure</span>
-                </label>
+                <label class="option-card"> <input type="checkbox" name="type" value="nature"> <span>Nature
+                    Escape</span> </label> <label class="option-card"> <input type="checkbox" name="type"
+                    value="foodie"> <span>Foodie Trip</span> </label> <label class="option-card"> <input type="checkbox"
+                    name="type" value="culture"> <span>Culture & Heritage</span> </label> <label class="option-card">
+                  <input type="checkbox" name="type" value="adventure"> <span>Adventure Journey</span> </label> <label
+                  class="option-card"> <input type="checkbox" name="type" value="relaxation"> <span>Relaxation
+                    Retreat</span> </label>
+
               </div>
               <button type="button" id="btn-generate-itinerary"
                 class="btn green-bright-btn flex-grow-1 align-items-center w-100">

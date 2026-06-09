@@ -170,8 +170,11 @@ function renderTimelineCard(item) {
     `;
 }
 
-async function viewSavedItinerary(idx) { //retrieve data from storage to display itinerary saved
-    const trip = await getStoredItineraries()[idx];
+async function viewSavedItinerary(idx) {
+    const trips = await getStoredItineraries();
+    const trip = trips[idx];
+
+    if (!trip) return;
 
     const { accommodation, timeline } = trip.itineraryData;
 
@@ -551,13 +554,19 @@ BackBtn.addEventListener('click', goBack);
 GenerateItineraryBtn.addEventListener('click', showItineraryResult);
 document.addEventListener('click', function (e) {
 
+
+    console.log("clicked", e.target);
+    
     if (e.target.classList.contains('btn-view')) {
         const idx = e.target.dataset.idx;
+         console.log("VIEW", idx);
         viewSavedItinerary(idx);
     }
 
     if (e.target.classList.contains('btn-delete')) {
         const idx = e.target.dataset.idx;
+                console.log("DELETE", idx);
+
         deleteItinerary(idx);
     }
     if (e.target.classList.contains('btn-save-itinerary')) {

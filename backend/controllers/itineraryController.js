@@ -23,8 +23,34 @@ const getItineraries = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+const deleteItinerary = async (req, res) => {
+    try {
+        const itinerary = await Itinerary.findOne({
+            _id: req.params.id,
+            userId: req.user._id
+        });
+
+        if (!itinerary) {
+            return res.status(404).json({
+                message: "Itinerary not found"
+            });
+        }
+
+        await itinerary.deleteOne();
+
+        res.json({
+            message: "Itinerary deleted"
+        });
+
+    } catch (err) {
+        res.status(500).json({
+            message: err.message
+        });
+    }
+};
 
 module.exports = {
     createItinerary,
-    getItineraries
+    getItineraries,
+    deleteItinerary
 };

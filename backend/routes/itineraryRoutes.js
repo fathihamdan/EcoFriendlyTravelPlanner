@@ -3,7 +3,8 @@ const router = express.Router();
 
 const {
     createItinerary,
-    getItineraries
+    getItineraries,
+    deleteItinerary
 } = require("../controllers/itineraryController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -11,5 +12,5 @@ const { protect } = require("../middleware/authMiddleware");
 // ONLY logged-in users can access
 router.post("/", protect, createItinerary);
 router.get("/", protect, getItineraries);
-
+router.delete("/:id", protect, deleteItinerary);
 module.exports = router;

@@ -140,9 +140,9 @@ function renderWeather(data) {
   document.getElementById('uvBar').style.width = `${Math.min((uv / 11) * 100, 100)}%`;
   document.getElementById('uvBar').style.background = uvInfo.color;
  
-  // ── 7-day forecast grid ───────────────────────────────────────────────
+  // ── 5-day forecast grid ───────────────────────────────────────────────
   const grid = document.getElementById('forecastGrid');
-  grid.innerHTML = forecast.map(day => {
+  grid.innerHTML = forecast.slice(0,5).map(day => {
     const date     = new Date(day.date + 'T12:00:00');
     const dayLabel = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][date.getDay()];
     return `

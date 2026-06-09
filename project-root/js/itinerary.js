@@ -163,19 +163,18 @@ async function renderItineraryCards() {
 }
 
 function renderTimelineCard(item) {
-    return `
-    <div class="activity-card d-flex">
-        <img src="${item.image}" class="activity-img m-3">
-        <div>
-            <div class="d-flex justify-content-between text-white">
-                <h6>${item.name}</h6>
-                <span class="tag2">${item.co2}</span>
-            </div>
-            <p class="text-muted">${item.type}</p>
-            <p class="text-muted">${item.description}</p>
-            <div class="d-flex">
-                <span class="tag2">Low CO2</span>
-                <span class="tag2">Eco Choice</span>
+return `
+    <div class="card activity-card p-3 mb-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <h6 class="text-white fw-bold">${item.type}</h6>
+            <span class="tag2">${item.co2}</span>
+        </div>
+        <div class="d-flex my-2">
+            <img src="${item.image}" alt="${item.name}" class="m-2 activity-img"></img>
+            <div class="p-2 justify-content-between">
+                <p class="text-white fw-bold">${item.name}</p>
+                <p class="text-muted small">${item.description || ''}</p>
+                <span class="tag2">${item.co2 || ''}</span>
             </div>
         </div>
     </div>
@@ -195,13 +194,13 @@ function renderPlaceCard(place, type, index = null) {
     return `
     <div class="card activity-card p-3 mb-2">
         <div class="d-flex justify-content-between align-items-center">
-            <h6 class="text-muted">${type}</h6>
+            <h6 class="text-white fw-bold">${type}</h6>
             <button class="btn btn-sm btn-outline-warning btn-change"data-type="${type}"data-index="${index ?? ''}">Change</button>
         </div>
-        <div class="justify-content row my-2">
-            <img src="${place.image}" alt="${place.name}" class="m-2 activity-img col-sm-4" style="width:100px; height: 100px;"></img>
-            <div class="p-2 col-sm-8">
-                <p class="text-white">${place.name}</p>
+        <div class="d-flex my-2">
+            <img src="${place.image}" alt="${place.name}" class="m-2 activity-img"></img>
+            <div class="p-2 justify-content-between">
+                <p class="text-white fw-bold">${place.name}</p>
                 <p class="text-muted small">${place.description || ''}</p>
                 <span class="tag2">${place.co2 || ''}</span>
             </div>
@@ -228,7 +227,8 @@ ${renderPlaceCard(accommodation, "Accommodation")}
 
     timeline.forEach((day, i) => {
         html += `
-        <div class="timeline mb-3">
+        <div class="timeline my-3">
+        <div class="timeline-marker">${day.day}</div>
           <h6 class="text-white">Day ${day.day}</h6>
             ${renderPlaceCard(day.activity, "Activity", i)}
             ${renderPlaceCard(day.restaurant, "Restaurant", i)}
@@ -295,43 +295,33 @@ async function viewSavedItinerary(id) {
                     Weather: ${trip.weather}
                 </span>
             </div>
+        </div>`
+    // Re-fetch forecast for the saved trip's date range
+    const forecastData = await fetchExtendedForecast(trip.destination, trip.startDate, trip.endDate);
+    const forecastMap = buildForecastMap(forecastData);
 
-            <p class="fw-bold text-white mt-2 mb-0">Accommodation</p>
-            ${renderTimelineCard(accommodation)}
-        </div>
-    `;
-
-    // ── TIMELINE (YOUR ORIGINAL LOGIC KEPT) ──────────────────
     timeline.forEach(day => {
-
+        // Parse the saved date string back to YYYY-MM-DD key
         const dateObj = new Date(day.date);
-
         const yyyy = dateObj.getFullYear();
         const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
         const dd = String(dateObj.getDate()).padStart(2, '0');
-
-        const dayForecast =
-            weatherForecast[formatDateKey(dateObj)];
+        const dateKey = `${yyyy}-${mm}-${dd}`;
+        const dayForecast = forecastMap[dateKey] || null;
 
         timelineHTML += `
             <div class="timeline">
                 <div class="timeline-marker">${day.day}</div>
-
                 <div class="timeline-item">
                     <div class="timeline-content p-2">
-
-                        <h6 class="text-white">
-                            Day ${day.day} - ${day.date}
-                        </h6>
-
+                        <h6 class="text-white">Day ${day.day} - ${day.date}</h6>
                         ${renderWeatherBadge(dayForecast)}
-
                         ${renderTimelineCard(day.activity)}
                         ${renderTimelineCard(day.restaurant)}
-
                     </div>
-                </div>
-            </div>
+                     <p class="fw-bold text-white mt-2 mb-0">Accommodation</p>
+            ${renderTimelineCard(accommodation)}
+            </div></div>
         `;
     });
 
@@ -720,18 +710,18 @@ function getDays(startDate, endDate) {
 
 function showChangeModal(options, type, index) {
 
-    let html = `<h5 class="text-white mb-2">Choose new ${type}</h5>`;
+    let html = `<h5 class="text-white mb-3">Choose new ${type}</h5>`;
 
     options.forEach((opt, i) => {
         html += `
-        <div class="card activity-card-clickable row p-2 mb-2 d-flex change-option"
+        <div class="card activity-card-clickable d-flex p-2 mb-2 change-option"
              data-type="${type}"
              data-index="${index}"
              data-option='${JSON.stringify(opt)}'>
-            <img src="${opt.image}" alt="${opt.name}" class="m-2 activity-img col-sm-4">
-            <div class="p-2 col-sm-6 flex-grow-1">
+            <img src="${opt.image}" alt="${opt.name}" class="m-2 activity-img" style="width:100px; height: 100px;"></img>
+            <div class="p-2 justify-content-between">
                 <h6 class="text-white mt-2">${opt.name}</h6>
-                <p class="text-muted fw-bold">Price: ${opt.price}</p>
+                <p class="text-white fw-bold">Price: ${opt.price}</p>
                 <p class="text-muted small">${opt.description}</p>
             </div>
         </div>`;

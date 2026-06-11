@@ -2,13 +2,13 @@ const API_BASE = "http://localhost:5000/api";
 
 let places = [];
 let currentView = "all";
-let favorites = [];   // now loaded from backend, not localStorage
+let favorites = []; 
 
 function getToken() {
     return localStorage.getItem("ecoroam_token");
 }
 
-// ── Load favorites from backend ───────────────────────────────────────────
+//Load favorites from backend
 async function loadFavorites() {
     const token = getToken();
     if (!token) return;
@@ -26,7 +26,7 @@ async function loadFavorites() {
     }
 }
 
-// ── Toggle favorite on backend ────────────────────────────────────────────
+//Toggle favorite on backend
 async function toggleFavoriteOnServer(placeId) {
     const token = getToken();
     if (!token) return;
@@ -40,10 +40,12 @@ async function toggleFavoriteOnServer(placeId) {
             },
             body: JSON.stringify({ placeId })
         });
-        if (!res.ok) throw new Error("Failed to update favorite");
+        
         const data = await res.json();
-        favorites = data.favorites;  // update local state from server response
-    } catch (err) {
+        favorites = data.favorites;  
+        if (!res.ok) throw new Error("Failed to update favorite");
+    } 
+    catch (err) {
         console.error("Could not toggle favorite:", err);
     }
 }
@@ -95,13 +97,13 @@ function renderPlaces(data) {
     });
 }
 
-// ── Favorite button click ─────────────────────────────────────────────────
+//Favorite button click
 document.getElementById("placesContainer").addEventListener("click", async function (e) {
     const btn = e.target.closest(".btn-fav");
     if (!btn) return;
 
     const id = btn.dataset.id;
-    btn.disabled = true;  // prevent double-click while saving
+    btn.disabled = true; 
 
     await toggleFavoriteOnServer(id);
 
@@ -109,7 +111,7 @@ document.getElementById("placesContainer").addEventListener("click", async funct
     applyFilters();  // re-render with updated favorites state
 });
 
-// ── Search & Filter ───────────────────────────────────────────────────────
+//Search & Filter
 const searchInput    = document.getElementById("searchInput");
 const filterType     = document.getElementById("filterType");
 const filterLocation = document.getElementById("filterLocation");
@@ -182,7 +184,7 @@ fetch(`${API_BASE}/places`)
     })
     .then(async (data) => {
         places = data;
-        await loadFavorites();   // load favorites after places are ready
+        await loadFavorites();   
         updateCounts();
         applyFilters();
     })

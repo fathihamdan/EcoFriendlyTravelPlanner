@@ -1,4 +1,4 @@
-// ── Helpers ────────────────────────────────────────────────────────
+// helper
   function show(id)  { document.getElementById(id).style.display = ''; }
   function hide(id)  { document.getElementById(id).style.display = 'none'; }
   function setText(id, val) { document.getElementById(id).textContent = val; }
@@ -40,7 +40,7 @@
   'Rainy weather? Great time to try local cuisine in a cosy restaurant!',
 ];
 
-// ── Main search ────────────────────────────────────────────────────────────
+// Main search
 async function searchWeather() {
   const city = document.getElementById('cityInput').value.trim();
   if (!city) return;
@@ -72,7 +72,7 @@ async function searchWeather() {
   }
 }
 
-// ── Render ─────────────────────────────────────────────────────────────────
+// render
 function renderWeather(data) {
   const current  = data.current;
   const location = data.location;
@@ -80,7 +80,7 @@ function renderWeather(data) {
   const today    = forecast[0].day;
   const astro    = forecast[0].astro;
  
-  // ── Current card ──────────────────────────────────────────────────────
+  // Current card
   setText('cityDisplay',  location.name);
   setText('countryDisplay', location.country);
   setText('localTime', new Date(location.localtime).toLocaleDateString('en-US', {
@@ -98,7 +98,7 @@ function renderWeather(data) {
   setText('visibility',   `${current.vis_km.toFixed(1)} km`);
   setText('cloudiness',   `${current.cloud}%`);
  
-  // ── Sun schedule ──────────────────────────────────────────────────────
+  // Sun schedule 
   setText('sunrise', astro.sunrise);
   setText('sunset',  astro.sunset);
  
@@ -115,10 +115,10 @@ function renderWeather(data) {
   setText('daylightHours', `${dlH}h ${dlM}m`);
   document.getElementById('daylightBar').style.width = `${Math.min((daylightMin / 720) * 100, 100)}%`;
  
-  // ── Eco tip ───────────────────────────────────────────────────────────
+  // Eco tip 
   setText('ecoTip', ecoTips[Math.floor(Math.random() * ecoTips.length)]);
  
-  // ── Detail cards ──────────────────────────────────────────────────────
+  //  Detail cards
   // Humidity
   setText('humidityBig', `${current.humidity}%`);
   document.getElementById('humidityBar').style.width = `${current.humidity}%`;
@@ -140,7 +140,7 @@ function renderWeather(data) {
   document.getElementById('uvBar').style.width = `${Math.min((uv / 11) * 100, 100)}%`;
   document.getElementById('uvBar').style.background = uvInfo.color;
  
-  // ── 5-day forecast grid ───────────────────────────────────────────────
+  // 5-day forecast grid 
   const grid = document.getElementById('forecastGrid');
   grid.innerHTML = forecast.slice(0,5).map(day => {
     const date     = new Date(day.date + 'T12:00:00');
@@ -156,7 +156,7 @@ function renderWeather(data) {
   }).join('');
 }
  
-// ── Event listeners ────────────────────────────────────────────────────────
+// Event listeners 
 document.getElementById('searchBtn').addEventListener('click', searchWeather);
 document.getElementById('cityInput').addEventListener('keydown', e => {
   if (e.key === 'Enter') searchWeather();

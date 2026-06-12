@@ -1,4 +1,3 @@
-// ── Global State ─────────────────────────────────────────
 let currentTransportEmissions = 0;
 let currentAccomEmissions = 0;
 let currentTransportDistance = 0;
@@ -7,7 +6,6 @@ let currentTransportPassengers = 1;
 let currentAccomType = "";
 let currentAccomNights = 0;
 
-// ── Constants ─────────────────────────────────────────────
 const emissionFactors = {
   flight_economy: 0.255,
   flight_business: 0.434,
@@ -44,7 +42,6 @@ const accomLabels = {
   camping: "⛺ Camping",
 };
 
-// ── Toast Notification ────────────────────────────────────
 function showToast(message, type = "success") {
   const wrap = document.getElementById("toast-wrap");
   if (!wrap) return;
@@ -95,7 +92,6 @@ function showToast(message, type = "success") {
   }, 3500);
 }
 
-// ── Input Validation (live) ───────────────────────────────
 document.getElementById("distance").addEventListener("input", function () {
   if (this.value < 0) this.value = 0;
   clearFieldError("distance", "distance-error");
@@ -125,7 +121,6 @@ document.getElementById("accom-select").addEventListener("change", function () {
   clearFieldError("accom-select", "accom-error");
 });
 
-// ── Field Error Helpers ───────────────────────────────────
 function showFieldError(inputId, errorId, message) {
   const input = document.getElementById(inputId);
   const errorEl = document.getElementById(errorId);
@@ -151,7 +146,6 @@ function clearFieldError(inputId, errorId) {
   }
 }
 
-// ── Tab Switcher ──────────────────────────────────────────
 function switchTab(tab, btnElement) {
   document
     .querySelectorAll(".tab-btn")
@@ -167,7 +161,6 @@ function switchTab(tab, btnElement) {
   }
 }
 
-// ── Impact Level ──────────────────────────────────────────
 function getImpactLevel(kg) {
   if (kg === 0)
     return { label: "✓ Zero Emission", color: "#d1fae5", text: "#065f46" };
@@ -178,7 +171,6 @@ function getImpactLevel(kg) {
   return { label: "🔴 High Impact", color: "#fee2e2", text: "#991b1b" };
 }
 
-// ── Calculate Transport ───────────────────────────────────
 function calculateTransport() {
   const method = document.getElementById("transport-select").value;
   const distance = parseFloat(document.getElementById("distance").value) || 0;
@@ -193,8 +185,6 @@ function calculateTransport() {
       "Please select a transport method.",
     );
     hasError = true;
-  } else {
-    clearFieldError("transport-select", "transport-error");
   }
   if (distance <= 0) {
     showFieldError(
@@ -244,7 +234,6 @@ function updateTransportResultUI() {
   document.getElementById("emission-result").style.display = "block";
 }
 
-// ── Calculate Accommodation ───────────────────────────────
 function calculateAccommodation() {
   const type = document.getElementById("accom-select").value;
   const nights = parseFloat(document.getElementById("nights").value) || 0;
@@ -284,7 +273,6 @@ function calculateAccommodation() {
   generateAccomAlternatives();
 }
 
-// ── Update Total Impact Card ──────────────────────────────
 function updateTotalImpact() {
   const total = currentTransportEmissions + currentAccomEmissions;
   document.getElementById("total-result").textContent = total.toFixed(2);
@@ -296,11 +284,9 @@ function updateTotalImpact() {
       currentAccomEmissions.toFixed(1) + " kg";
     document.getElementById("impact-breakdown").style.display = "block";
 
-    // Impact badge on sidebar card
     const badge = document.getElementById("impact-badge");
     badge.style.display = "block";
 
-    // Percentage breakdown
     const tPct = Math.round((currentTransportEmissions / total) * 100);
     const aPct = Math.round((currentAccomEmissions / total) * 100);
     const tPctEl = document.getElementById("transport-pct");
@@ -308,13 +294,11 @@ function updateTotalImpact() {
     if (tPctEl) tPctEl.textContent = `(${tPct}%)`;
     if (aPctEl) aPctEl.textContent = `(${aPct}%)`;
 
-    // Colour bar
     const barT = document.getElementById("bar-transport");
     const barA = document.getElementById("bar-accom");
     if (barT) barT.style.width = tPct + "%";
     if (barA) barA.style.width = aPct + "%";
 
-    // Impact pill colour
     const impactLabel = document.getElementById("impact-label");
     if (total <= 50) {
       impactLabel.style.cssText =
@@ -362,7 +346,6 @@ function updateTotalImpact() {
   }
 }
 
-// ── Transport Alternatives ────────────────────────────────
 function generateTransportAlternatives() {
   if (currentTransportEmissions === 0) return;
 
@@ -395,7 +378,6 @@ function generateTransportAlternatives() {
   altContainer.style.display = foundGreener ? "block" : "none";
 }
 
-// ── Accommodation Alternatives ────────────────────────────
 function generateAccomAlternatives() {
   if (currentAccomEmissions === 0) return;
 
@@ -427,7 +409,6 @@ function generateAccomAlternatives() {
   altContainer.style.display = foundGreener ? "block" : "none";
 }
 
-// ── Save Result to MongoDB ────────────────────────────────
 async function saveResult() {
   const token = localStorage.getItem("ecoroam_token");
   if (!token) {
@@ -485,7 +466,6 @@ async function saveResult() {
   }
 }
 
-// ── Load History from MongoDB ─────────────────────────────
 async function loadHistory() {
   const token = localStorage.getItem("ecoroam_token");
   if (!token) return;
@@ -564,7 +544,6 @@ async function loadHistory() {
   }
 }
 
-// ── Delete a History Record ───────────────────────────────
 async function deleteRecord(id, btnEl) {
   const token = localStorage.getItem("ecoroam_token");
   if (!token) return;
@@ -592,7 +571,6 @@ async function deleteRecord(id, btnEl) {
   }
 }
 
-// ── Restore State from localStorage ──────────────────────
 function restoreState() {
   const total = localStorage.getItem("carbonTotal");
   if (!total) return;
@@ -631,7 +609,6 @@ function restoreState() {
   if (currentAccomType) generateAccomAlternatives();
 }
 
-// ── Reset Calculator ──────────────────────────────────────
 function resetCalculator() {
   [
     "carbonTotal",
@@ -689,7 +666,6 @@ function resetCalculator() {
   showToast("Calculator has been reset.", "info");
 }
 
-// ── On Page Load ──────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   restoreState();
   loadHistory();

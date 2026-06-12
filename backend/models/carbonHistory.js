@@ -23,7 +23,7 @@ const CarbonHistorySchema = new mongoose.Schema(
     totalEmissions: { type: Number, required: true },
     impactLevel: { type: String, default: "" }, // "Low Impact", "Medium Impact", "High Impact"
   },
-  { timestamps: true }, // adds createdAt + updatedAt automatically
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("CarbonHistory", CarbonHistorySchema);

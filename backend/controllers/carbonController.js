@@ -1,7 +1,5 @@
 const CarbonHistory = require("../models/CarbonHistory");
 
-// ── POST /api/carbon/save ────────────────────────────────
-// Save a carbon calculation result for the logged-in user
 const saveCalculation = async (req, res) => {
   try {
     const userId = req.user.id; // comes from auth middleware
@@ -18,7 +16,6 @@ const saveCalculation = async (req, res) => {
       impactLevel,
     } = req.body;
 
-    // Basic validation — total must exist and be a number
     if (totalEmissions === undefined || isNaN(totalEmissions)) {
       return res.status(400).json({ message: "Invalid totalEmissions value." });
     }
@@ -51,8 +48,6 @@ const saveCalculation = async (req, res) => {
   }
 };
 
-// ── GET /api/carbon/history ──────────────────────────────
-// Retrieve all saved calculations for the logged-in user
 const getHistory = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -68,8 +63,6 @@ const getHistory = async (req, res) => {
   }
 };
 
-// ── DELETE /api/carbon/history/:id ──────────────────────
-// Delete a single history record (must belong to user)
 const deleteCalculation = async (req, res) => {
   try {
     const userId = req.user.id;
